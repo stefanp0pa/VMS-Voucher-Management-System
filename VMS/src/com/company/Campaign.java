@@ -48,7 +48,10 @@ public class Campaign {
     private Set<User> observers; //we dont want any user duplicates
 
     private static Integer voucherId = 1;
-    private static Integer voucherCode = 0;
+    private static Integer voucherCode = 999;
+
+    public static Integer getNewVoucherId(){return Campaign.voucherId++;}
+    public static Integer getNewVoucherCode(){return Campaign.voucherCode++;}
 
 
     public Vector<Voucher> getVouchers(){return this.vouchers;}
@@ -62,8 +65,7 @@ public class Campaign {
     }
 
     public void generateVoucher(String email,String voucherType,float value){
-        if(email==null || voucherType==null)
-            return;
+
         Integer voucherCode = Campaign.voucherCode++;
         Integer voucherId = Campaign.voucherId++;
         if(voucherType.equals("Gift")){
@@ -127,5 +129,7 @@ public class Campaign {
         }
     }
 
+    public Integer getCampaignId(){return this.campaignId;}
 
+    public CampaignVoucherMap getCampaignVoucherMap(){return this.campaignVoucherMap;}
 }

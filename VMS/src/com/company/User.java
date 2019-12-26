@@ -22,6 +22,7 @@ public class User {
     public String getUserEmail(){return  this.userEmail;}
     public String getUserPassword(){return  this.userEmail;}
     public UserType getUserType(){return this.userType;}
+    public UserVoucherMap getReceivedVouchers(){return this.receivedVouchers;}
 
     public void update(Notification notification){
         userNotifications.add(notification);
