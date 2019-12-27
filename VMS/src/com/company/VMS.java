@@ -27,6 +27,7 @@ public class VMS {
     public Vector<Campaign> getCampaigns(){return this.campaigns;}
     public Campaign getCampaign(Integer id){return null;}
     public void addCampaign(Campaign campaign){this.campaigns.add(campaign);}
+
     public void updateCampaign(Integer id, Campaign campaign){}
 
     public void cancelCampaign(Integer id){

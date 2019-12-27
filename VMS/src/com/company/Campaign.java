@@ -15,12 +15,13 @@ public class Campaign {
                     Date startDate,
                     Date endDate,
                     Integer totalVouchersCount,
-                    Vector<Voucher> vouchers){
+                    IStrategy strategyType){
         this.campaignId = campaignId;
         this.campaignName = campaignName;
         this.campaignDescription = campaignDescription;
         this.startDate = startDate;
         this.endDate = endDate;
+        this.strategyType = strategyType;
 
         // la inceput, numarul de vouchere disponibile este egal cu numarul total
         this.totalVouchersCount = totalVouchersCount;
@@ -29,11 +30,7 @@ public class Campaign {
         // replaced default CampaignStatusType value
         decideCampaignStatusType();
 
-        if(vouchers==null){
-            this.vouchers = new Vector<>();
-        }else{
-            this.vouchers = vouchers;
-        }
+        this.vouchers = new Vector<Voucher>();
     }
 
     private Integer campaignId;
@@ -45,6 +42,8 @@ public class Campaign {
 
     private Integer totalVouchersCount;
     private Integer availableVouchersCount;
+
+    private IStrategy strategyType;
 
     private CampaignVoucherMap campaignVoucherMap;
     private CampaignStatusType campaignStatusType;
@@ -156,4 +155,8 @@ public class Campaign {
         }
         this.setCampaignStatusType(CampaignStatusType.EXPIRED);
     }
+
+    public void setStrategyType(IStrategy strategyType){this.strategyType = strategyType;}
+
+    public void executeStrategy(){this.strategyType.execute(this);}
 }
