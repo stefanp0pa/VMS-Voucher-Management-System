@@ -8,6 +8,8 @@ public class User {
         ADMIN,GUEST
     }
 
+    public static Integer generalUserId = 1;
+
     private Integer userId;
     private String userName;
     private String userEmail;
@@ -23,6 +25,8 @@ public class User {
     public String getUserPassword(){return  this.userEmail;}
     public UserType getUserType(){return this.userType;}
     public UserVoucherMap getReceivedVouchers(){return this.receivedVouchers;}
+
+    public static Integer getGeneralUserId(){return User.generalUserId++;}
 
     public void update(Notification notification){
         userNotifications.add(notification);

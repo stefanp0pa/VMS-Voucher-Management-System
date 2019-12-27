@@ -12,8 +12,8 @@ public class Campaign {
     public Campaign(Integer campaignId,
                     String campaignName,
                     String campaignDescription,
-                    String startDate,
-                    String endDate,
+                    Date startDate,
+                    Date endDate,
                     Integer totalVouchersCount,
                     Vector<Voucher> vouchers){
         this.campaignId = campaignId;
@@ -21,8 +21,13 @@ public class Campaign {
         this.campaignDescription = campaignDescription;
         this.startDate = startDate;
         this.endDate = endDate;
+
+        // la inceput, numarul de vouchere disponibile este egal cu numarul total
         this.totalVouchersCount = totalVouchersCount;
-        this.campaignStatusType = CampaignStatusType.NEW;
+        this.availableVouchersCount = totalVouchersCount;
+
+        // replaced default CampaignStatusType value
+        decideCampaignStatusType();
 
         if(vouchers==null){
             this.vouchers = new Vector<>();
@@ -35,8 +40,8 @@ public class Campaign {
     private String campaignName;
     private String campaignDescription;
 
-    private String startDate;
-    private String endDate;
+    private Date startDate;
+    private Date endDate;
 
     private Integer totalVouchersCount;
     private Integer availableVouchersCount;
@@ -94,7 +99,7 @@ public class Campaign {
         }
     }
 
-    public void redeemVoucher(String code, LocalDateTime date){
+    public void redeemVoucher(String code, Date date){
         if(code == null || date == null)
             return;
         Voucher target = null;
@@ -132,4 +137,23 @@ public class Campaign {
     public Integer getCampaignId(){return this.campaignId;}
 
     public CampaignVoucherMap getCampaignVoucherMap(){return this.campaignVoucherMap;}
+
+    public Date getStartDate(){return this.startDate;}
+    public Date getEndDate(){return this.endDate;}
+
+    public CampaignStatusType getCampaignStatusType(){return this.campaignStatusType;}
+    public void setCampaignStatusType(CampaignStatusType newStatus){this.campaignStatusType = newStatus;}
+
+    public void decideCampaignStatusType(){
+        Date appDate = VMS.getInstance().getApplicationStartDate();
+        if(this.startDate.after(appDate)){
+            this.setCampaignStatusType(CampaignStatusType.NEW);
+            return;
+        }
+        if(this.endDate.after(appDate)){
+            this.setCampaignStatusType(CampaignStatusType.STARTED);
+            return;
+        }
+        this.setCampaignStatusType(CampaignStatusType.EXPIRED);
+    }
 }
