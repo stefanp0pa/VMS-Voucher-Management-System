@@ -60,5 +60,14 @@ public class VMS {
         this.applicationStartDate = applicationStartDate;
     }
 
+    public User getUserByEmail(String email){
+        for(int i =0 ; i< users.size(); i++){
+            if(users.get(i).getUserEmail() == email){
+                return users.get(i);
+            }
+        }
+        return null;
+    }
+
 
 }
