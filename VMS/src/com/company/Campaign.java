@@ -72,15 +72,19 @@ public class Campaign {
 
         Integer voucherCode = Campaign.voucherCode++;
         Integer voucherId = Campaign.voucherId++;
+        Voucher newVoucher = null;
+
         if(voucherType.equals("Gift")){
-            this.vouchers.add(new GitfVoucher(value,
+            this.vouchers.add(new GitfVoucher(
+                    value,
                     voucherId,
                     String.valueOf(voucherCode),
                     this.campaignId,
                     email));
         }
         if(voucherType.equals("Loyality")){
-            this.vouchers.add(new LoyalityVoucher(value,
+            this.vouchers.add(new LoyalityVoucher(
+                    value,
                     voucherId,
                     String.valueOf(voucherCode),
                     this.campaignId,
@@ -110,8 +114,24 @@ public class Campaign {
         }
         if(target==null)
             return;
-        target.setUsedDate(date);
-        target.setVoucherStatusType(Voucher.VoucherStatusType.USED);
+        //target.setUsedDate(date);
+        //target.setVoucherStatusType(Voucher.VoucherStatusType.USED);
+        markUsedVoucher(target,date);
+    }
+
+    private void markUsedVoucher(Voucher v,Date date){
+        // a mai fost folosit
+        if(v.getUsedDate() != null)
+            return;
+        // in afara perioadei campaniei
+        if(this.startDate.after(date))
+            return;
+        if(date.after(this.endDate))
+            return;
+        if(date.compareTo(this.endDate)!=0)
+            return;
+        v.setUsedDate(date);
+        v.setVoucherStatusType(Voucher.VoucherStatusType.USED);
     }
 
     public User[] getObservers(){

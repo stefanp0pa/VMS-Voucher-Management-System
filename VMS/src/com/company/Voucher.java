@@ -18,6 +18,7 @@ public abstract class Voucher {
         this.campaignId = campaignId;
         this.email = email;
         this.voucherStatusType = VoucherStatusType.UNUSED;
+        this.usedDate = null;
     }
 
     private Integer voucherId;
