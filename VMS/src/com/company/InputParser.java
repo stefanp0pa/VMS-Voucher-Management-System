@@ -3,8 +3,11 @@ package com.company;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.nio.charset.IllegalCharsetNameException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Scanner;
 import java.util.regex.Pattern;
 
@@ -67,7 +70,88 @@ public class InputParser {
         return true;
     }
 
-    public boolean parseCampaignInput(String campaignsInputPath){
+    public boolean parseCampaignInput(String campaignsInputPath) throws IOException {
+        Path filePath = Paths.get(campaignsInputPath);
+        Scanner scanner = new Scanner(filePath);
+
+        int campaignsCount = scanner.nextInt();
+
+        scanner.useDelimiter("(\\s+)|-");
+        int year = Integer.parseInt(scanner.next());
+        int month = Integer.parseInt(scanner.next());
+        int day  = Integer.parseInt(scanner.next());
+
+        scanner.useDelimiter("(\\n)|:");
+        int hour = Integer.parseInt(scanner.next().trim());
+        int minutes = Integer.parseInt(scanner.next());
+
+        Calendar cal = Calendar.getInstance();
+        cal.set(year,month-1,day,hour,minutes,0);
+        VMS.getInstance().setApplicationStartDate(cal.getTime());
+
+        for(int i = 0; i < campaignsCount; i++){
+
+            scanner.useDelimiter(";");
+            //int campaignId = Integer.parseInt(scanner.next());
+            Integer campaignId = Integer.parseInt(scanner.next());
+            String campaignName = scanner.next();
+            String campaignDescription = scanner.next();
+
+            scanner.useDelimiter(";|(\\s+)|-");
+            year = Integer.parseInt(scanner.next());
+            month = Integer.parseInt(scanner.next());
+            day  = Integer.parseInt(scanner.next());
+
+            scanner.useDelimiter("(\\s+)|:");
+            hour = Integer.parseInt(scanner.next());
+            scanner.useDelimiter(":|;");
+            minutes = Integer.parseInt(scanner.next());
+
+            cal.set(year,month-1,day,hour,minutes,0);
+            Date startDate = cal.getTime();
+
+            scanner.useDelimiter(";|(\\s+)|-");
+            year = Integer.parseInt(scanner.next());
+            month = Integer.parseInt(scanner.next());
+            day  = Integer.parseInt(scanner.next());
+
+            scanner.useDelimiter("(\\s+)|:");
+            hour = Integer.parseInt(scanner.next());
+            scanner.useDelimiter(":|;");
+            minutes = Integer.parseInt(scanner.next());
+
+            cal.set(year,month-1,day,hour,minutes,0);
+            Date endDate = cal.getTime();
+
+            scanner.useDelimiter(";");
+            int budget = Integer.parseInt(scanner.next());
+            String strategyType = scanner.next();
+            IStrategy strategy = null;
+            switch (strategyType){
+                case "A":
+                    strategy = new StrategyA();
+                    break;
+                case "B":
+                    strategy = new StrategyB();
+                    break;
+                case "C":
+                    strategy = new StrategyC();
+                    break;
+                default:
+                    break;
+            }
+
+            VMS.getInstance().getCampaigns().add(new Campaign(
+               campaignId,
+               campaignName,
+               campaignDescription,
+               startDate,
+               endDate,
+               budget,
+               strategy
+            ));
+        }
+
         return true;
     }
 
