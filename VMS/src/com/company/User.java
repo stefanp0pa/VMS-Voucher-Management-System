@@ -8,7 +8,7 @@ public class User {
         ADMIN,GUEST
     }
 
-    public static Integer generalUserId = 1;
+    private static Integer generalUserId = 1;
 
     private Integer userId;
     private String userName;

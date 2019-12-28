@@ -9,36 +9,25 @@ public class StrategyB implements IStrategy{
 
     @Override
     public void execute(Campaign c) {
-        User[] users = c.getObservers();
-        if(users==null || users.length==0)
-            return;
-        User winner = null;
-        int maxUsed = -1;
-        for(int i = 0 ; i < users.length; i++){
-            Vector<Voucher> userVouchers = c.getCampaignVoucherMap()
-                    .get(users[i].getUserEmail());
-            int usedVouchersCount = 0;
-            for(int j = 0; j < userVouchers.size(); i++){
-                if(userVouchers.get(j).getVoucherStatusType()
-                        == Voucher.VoucherStatusType.USED){
-                    usedVouchersCount++;
-                }
+
+        Vector<User> campaignObservers = c.getObservers();
+        int maxUsed = -1; // maximul de vouchere folosite
+        User maxUser = null;
+
+        for(int i = 0; i < campaignObservers.size(); i++){
+            User currUser = campaignObservers.get(i);
+            UserVoucherMap currUserMap = currUser.getReceivedVouchers();
+            Vector<Voucher> currCampaignVouchers = currUserMap.get(c.getCampaignId());
+            int counting = 0;
+            for(int j = 0; j < currCampaignVouchers.size(); j++){
+                if(currCampaignVouchers.get(j).getVoucherStatusType() == Voucher.VoucherStatusType.USED)
+                    counting++;
             }
-            if(usedVouchersCount > maxUsed){
-                maxUsed = usedVouchersCount;
-                winner = users[i];
+            if(counting > maxUsed){
+                maxUsed = counting;
+                maxUser = currUser;
             }
         }
-
-        if(winner == null)
-            return;
-        winner.getReceivedVouchers().addVoucher(new LoyalityVoucher(
-                50,
-                Campaign.getNewVoucherId(),
-                String.valueOf(Campaign.getNewVoucherCode()),
-                c.getCampaignId(),
-                winner.getUserEmail()
-        ));
-
+        c.generateVoucher(maxUser.getUserEmail(),"Loyality",50);
     }
 }

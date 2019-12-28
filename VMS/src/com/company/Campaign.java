@@ -95,10 +95,13 @@ public class Campaign {
                     email);
         }
 
-        if(VMS.getInstance().getUserByEmail(email)!=null){
-            if(!this.observers.contains(VMS.getInstance().getUserByEmail(email))){
+        User user = VMS.getInstance().getUserByEmail(email);
+
+        if(user!=null){
+            if(!this.observers.contains(user)){
                 addObserver(VMS.getInstance().getUserByEmail(email));
             }
+            user.getReceivedVouchers().addVoucher(newVoucher);
         }
 
         this.campaignVoucherMap
@@ -174,7 +177,7 @@ public class Campaign {
 
     public Integer getCampaignId(){return this.campaignId;}
 
-    public CampaignVoucherMap getCampaignVoucherMap(){return this.campaignVoucherMap;}
+    //public CampaignVoucherMap getCampaignVoucherMap(){return this.campaignVoucherMap;}
 
     public Date getStartDate(){return this.startDate;}
     public Date getEndDate(){return this.endDate;}
