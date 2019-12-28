@@ -31,6 +31,7 @@ public class Campaign {
         decideCampaignStatusType();
 
         this.vouchers = new Vector<Voucher>();
+        this.campaignVoucherMap = new CampaignVoucherMap();
     }
 
     private Integer campaignId;
