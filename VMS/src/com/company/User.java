@@ -1,6 +1,7 @@
 package com.company;
 
 import java.util.List;
+import java.util.Vector;
 
 public class User {
 
@@ -16,8 +17,20 @@ public class User {
     private String userPassword;
     private UserType userType;
 
-    private UserVoucherMap receivedVouchers;
-    private List<Notification> userNotifications;
+    private UserVoucherMap receivedVouchers = new UserVoucherMap() ;
+    private Vector<Notification> userNotifications;
+
+    public User(Integer userId,
+                String userName,
+                String userPassword,
+                String userEmail,
+                UserType userType){
+        this.userId = userId;
+        this.userName = userName;
+        this.userPassword = userPassword;
+        this.userEmail = userEmail;
+        this.userType = userType;
+    }
 
     public Integer getUserId(){return this.userId;}
     public String getUserName(){return  this.userName;}

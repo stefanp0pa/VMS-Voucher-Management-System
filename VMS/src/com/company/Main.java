@@ -1,5 +1,6 @@
 package com.company;
 
+import java.io.IOException;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Map;
@@ -55,6 +56,10 @@ public class Main {
        }
 
        uvm.size();*/
-
+        try {
+            InputParser.getInstance().parseUsersInput("D:\\Facultate\\Sem1\\POO\\VMS-Voucher-Management-System\\VMStests\\test04\\input\\users.txt");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

@@ -21,8 +21,8 @@ public class VMS {
         return VMS.vmsInstance;
     }
 
-    private Vector<Campaign> campaigns;
-    private Vector<User> users;
+    private Vector<Campaign> campaigns = new Vector<>();
+    private Vector<User> users = new Vector<>();
 
     public Vector<Campaign> getCampaigns(){return this.campaigns;}
     public Campaign getCampaign(Integer id){return null;}
