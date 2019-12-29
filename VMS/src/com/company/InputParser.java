@@ -13,20 +13,12 @@ import java.util.regex.Pattern;
 
 public class InputParser {
 
-    private static InputParser instance = null;
-
     private InputParser(){
 
     }
 
-    public static InputParser getInstance(){
-        if(InputParser.instance == null){
-            InputParser.instance = new InputParser();
-        }
-        return instance;
-    }
 
-    public boolean parseUsersInput(String usersInputPath) throws IOException {
+    public static boolean parseUsersInput(String usersInputPath) throws IOException {
         Path filePath = Paths.get(usersInputPath);
         Scanner scanner = new Scanner(filePath);
         int usersCount = scanner.nextInt();
@@ -70,7 +62,7 @@ public class InputParser {
         return true;
     }
 
-    public boolean parseCampaignInput(String campaignsInputPath) throws IOException {
+    public static boolean parseCampaignInput(String campaignsInputPath) throws IOException {
         Path filePath = Paths.get(campaignsInputPath);
         Scanner scanner = new Scanner(filePath);
 
@@ -174,7 +166,7 @@ public class InputParser {
         return true;
     }
 
-    public boolean parseEventsInput(String eventsInputPath) throws IOException {
+    public static boolean parseEventsInput(String eventsInputPath) throws IOException {
         Path filePath = Paths.get(eventsInputPath);
         Scanner scanner = new Scanner(filePath);
 
@@ -194,25 +186,52 @@ public class InputParser {
         scanner.useDelimiter("(\\n)");
         int eventsCount = Integer.parseInt(scanner.next());
 
-        for(int i = 0; i < 5; i++){
-            scanner.useDelimiter(";");
+        for(int i = 0; i < eventsCount; i++){
+            scanner.useDelimiter(";|(\\n)");
             int userId = Integer.parseInt(scanner.next().trim());
-            System.out.println(userId);
-
             String eventAction = scanner.next();
 
+            //System.out.println("Index " + i);
+
+            System.out.print(userId+" ");
             System.out.println(eventAction);
 
             switch(eventAction){
 
                 case "generateVoucher":
-                    scanner.useDelimiter("(\\n)|;");
-                    System.out.println("Generate Voucher");
-                    int campaignId = Integer.parseInt(scanner.next());
-                    String email = scanner.next();
-                    String voucherType = scanner.next();
-                    float value = Float.parseFloat(scanner.next().trim());
-                    VMS.getInstance().getCampaign(campaignId).generateVoucher(email,voucherType,value);
+                    parseGenerateVoucherEvent(scanner);
+                    break;
+
+                case "redeemVoucher":
+                    parseRedeemVoucherEvent(scanner);
+                    break;
+
+                case "getVouchers":
+                    parseGetVouchersEvent();
+                    break;
+
+                case "getVoucher":
+                    parseGetVoucherEvent(scanner);
+                    break;
+
+                case "getObservers":
+                    parseGetObserversEvent(scanner);
+                    break;
+
+                case "getNotifications":
+                    parseGetNotificationsEvent();
+                    break;
+
+                case "addCampaign":
+                    parseAddCampaignEvent(scanner);
+                    break;
+
+                case "cancelCampaign":
+                    parseCancelCampaignEvent(scanner);
+                    break;
+
+                case "editCampaign":
+                    parseEditCampaignEvent(scanner);
                     break;
 
                 default:
@@ -223,7 +242,166 @@ public class InputParser {
         return true;
     }
 
-    public boolean writeOutput(String outputFilePath){
+    public static boolean writeOutput(String outputFilePath){
+        return true;
+    }
+
+    public static boolean parseGenerateVoucherEvent(Scanner scanner){
+        scanner.useDelimiter(";|(\\n)");
+        int campaignId = Integer.parseInt(scanner.next());
+        String email = scanner.next();
+        String voucherType = scanner.next();
+        float value = Float.parseFloat(scanner.next().trim());
+
+        //VMS.getInstance().getCampaign(campaignId).generateVoucher(email,voucherType,value);
+        return true;
+    }
+
+    public static boolean parseRedeemVoucherEvent(Scanner scanner){
+        scanner.useDelimiter(";");
+        int campaignId = Integer.parseInt(scanner.next());
+        int voucherId = Integer.parseInt(scanner.next());
+
+        scanner.useDelimiter(";|-|(\\s+)");
+        int year = Integer.parseInt(scanner.next());
+        int month = Integer.parseInt(scanner.next());
+        int day = Integer.parseInt(scanner.next());
+
+        scanner.useDelimiter("(\\s+)|:");
+        int hour = Integer.parseInt(scanner.next());
+        scanner.useDelimiter(":|(\\n)");
+        int minutes = Integer.parseInt(scanner.next());
+
+        Calendar cal = Calendar.getInstance();
+        cal.set(year,month,day,hour,minutes,0);
+        Date redeemDate = cal.getTime();
+
+        //System.out.println(redeemDate);
+        //VMS.getInstance().getCampaign(campaignId).redeemVoucher()....
+        return true;
+    }
+
+    public static boolean parseAddCampaignEvent(Scanner scanner){
+        scanner.useDelimiter(";");
+        int campaignId = Integer.parseInt(scanner.next());
+        String campaignName = scanner.next();
+        String campaignDescription = scanner.next();
+
+        scanner.useDelimiter(";|-");
+        int year = Integer.parseInt(scanner.next());
+        int month = Integer.parseInt(scanner.next());
+
+        scanner.useDelimiter("-|(\\s+)");
+        int day = Integer.parseInt(scanner.next());
+
+        scanner.useDelimiter("(\\s+)|:");
+        int hour = Integer.parseInt(scanner.next());
+
+        scanner.useDelimiter(":|;");
+        int minutes = Integer.parseInt(scanner.next());
+
+        Calendar cal = Calendar.getInstance();
+        cal.set(year,month-1,day,hour,minutes,0);
+        Date startDate = cal.getTime();
+
+        scanner.useDelimiter(";|-");
+        year = Integer.parseInt(scanner.next());
+        month = Integer.parseInt(scanner.next());
+
+        scanner.useDelimiter("-|(\\s+)");
+        day = Integer.parseInt(scanner.next());
+
+        scanner.useDelimiter("(\\s+)|:");
+        hour = Integer.parseInt(scanner.next());
+
+        scanner.useDelimiter(":|;");
+        minutes = Integer.parseInt(scanner.next());
+
+        scanner.useDelimiter(";");
+        int budget = Integer.parseInt(scanner.next());
+
+        scanner.useDelimiter(";|(\\n)");
+        String strategyType = scanner.next();
+
+        //add campaign
+
+        return true;
+    }
+
+    public static boolean parseEditCampaignEvent(Scanner scanner){
+        scanner.useDelimiter(";");
+        int campaignId = Integer.parseInt(scanner.next());
+        String campaignName = scanner.next();
+        String campaignDescription = scanner.next();
+
+        scanner.useDelimiter(";|-");
+        int year = Integer.parseInt(scanner.next());
+        int month = Integer.parseInt(scanner.next());
+
+        scanner.useDelimiter("-|(\\s+)");
+        int day = Integer.parseInt(scanner.next());
+
+        scanner.useDelimiter("(\\s+)|:");
+        int hour = Integer.parseInt(scanner.next());
+
+        scanner.useDelimiter(":|;");
+        int minutes = Integer.parseInt(scanner.next());
+
+        Calendar cal = Calendar.getInstance();
+        cal.set(year,month-1,day,hour,minutes,0);
+        Date startDate = cal.getTime();
+
+        scanner.useDelimiter(";|-");
+        year = Integer.parseInt(scanner.next());
+        month = Integer.parseInt(scanner.next());
+
+        scanner.useDelimiter("-|(\\s+)");
+        day = Integer.parseInt(scanner.next());
+
+        scanner.useDelimiter("(\\s+)|:");
+        hour = Integer.parseInt(scanner.next());
+
+        scanner.useDelimiter(":|;");
+        minutes = Integer.parseInt(scanner.next());
+
+        cal.set(year,month-1,day,hour,minutes,0);
+        Date endDate = cal.getTime();
+
+        scanner.useDelimiter(";|(\\n)");
+        int budget = Integer.parseInt(scanner.next());
+
+        System.out.println(budget);
+
+        return true;
+    }
+
+    public static boolean parseCancelCampaignEvent(Scanner scanner){
+        scanner.useDelimiter(";|(\\n)");
+        int campaignId = Integer.parseInt(scanner.next());
+        return true;
+    }
+
+    public static boolean parseGetVouchersEvent(){
+        //
+        return true;
+    }
+
+    public static boolean parseGetObserversEvent(Scanner scanner){
+        scanner.useDelimiter(";|(\\n)");
+        int campaignId = Integer.parseInt(scanner.next());
+
+        //VMS.getInstance().getCampaign(campaignId).getObservers()
+        return true;
+    }
+
+    public static boolean parseGetNotificationsEvent(){
+        // action
+        return true;
+    }
+
+    public static boolean parseGetVoucherEvent(Scanner scanner){
+        scanner.useDelimiter(";|(\\n)");
+        int campaignId = Integer.parseInt(scanner.next());
         return true;
     }
 
