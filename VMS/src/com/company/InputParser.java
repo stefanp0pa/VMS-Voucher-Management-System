@@ -199,7 +199,7 @@ public class InputParser {
             switch(eventAction){
 
                 case "generateVoucher":
-                    parseGenerateVoucherEvent(scanner);
+                    parseGenerateVoucherEvent(userId,scanner);
                     break;
 
                 case "redeemVoucher":
@@ -246,12 +246,17 @@ public class InputParser {
         return true;
     }
 
-    public static boolean parseGenerateVoucherEvent(Scanner scanner){
+    public static boolean parseGenerateVoucherEvent(Integer userId, Scanner scanner){
         scanner.useDelimiter(";|(\\n)");
         int campaignId = Integer.parseInt(scanner.next());
         String email = scanner.next();
         String voucherType = scanner.next();
         float value = Float.parseFloat(scanner.next().trim());
+
+        User user = VMS.getInstance().getUserById(userId);
+        if(user.getUserType() == User.UserType.ADMIN){
+            VMS.getInstance().getCampaign(campaignId).generateVoucher(email,voucherType,value);
+        }
 
         //VMS.getInstance().getCampaign(campaignId).generateVoucher(email,voucherType,value);
         return true;

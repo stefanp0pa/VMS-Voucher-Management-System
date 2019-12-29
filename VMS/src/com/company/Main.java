@@ -58,21 +58,52 @@ public class Main {
        uvm.size();*/
 
         try {
-            InputParser.parseUsersInput("D:\\Facultate\\Sem1\\POO\\VMS-Voucher-Management-System\\VMStests\\test02\\input\\users.txt");
+            InputParser.parseUsersInput("D:\\Facultate\\Sem1\\POO\\VMS-Voucher-Management-System\\VMStests\\test06\\input\\users.txt");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        /*Vector<User> users = VMS.getInstance().getUsers();
+        for(int i =0 ; i < users.size(); i++){
+            System.out.println(users.get(i).toString());
+        }*/
+
+        try {
+            InputParser.parseCampaignInput("D:\\Facultate\\Sem1\\POO\\VMS-Voucher-Management-System\\VMStests\\test06\\input\\campaigns.txt");
         } catch (IOException e) {
             e.printStackTrace();
         }
 
         try {
-            InputParser.parseCampaignInput("D:\\Facultate\\Sem1\\POO\\VMS-Voucher-Management-System\\VMStests\\test02\\input\\campaigns.txt");
+            InputParser.parseEventsInput("D:\\Facultate\\Sem1\\POO\\VMS-Voucher-Management-System\\VMStests\\test06\\input\\events.txt");
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        try {
-            InputParser.parseEventsInput("D:\\Facultate\\Sem1\\POO\\VMS-Voucher-Management-System\\VMStests\\test02\\input\\events.txt");
-        } catch (IOException e) {
-            e.printStackTrace();
+        /*
+        Vector<Campaign> campaigns = VMS.getInstance().getCampaigns();
+        for(int i = 0; i < campaigns.size(); i++){
+            System.out.println("\nCampaignId: " + campaigns.get(i).getCampaignId());
+            System.out.println(campaigns.get(i).getCampaignVoucherMap().toString());
+            Vector<User> observers = campaigns.get(i).getObservers();
+            for(int j =0; j < observers.size(); j++){
+                System.out.println(observers.get(j).getUserEmail());
+            }
         }
+
+        Vector<User> users = VMS.getInstance().getUsers();
+        for(int i = 0; i < users.size(); i++){
+            System.out.println("\nUserId: " + users.get(i).getUserId());
+            System.out.println(users.get(i).getReceivedVouchers().toString());
+        }
+
+        /*User target = VMS.getInstance().getUserByEmail("USER_5_MAIL");
+        if(target==null){
+            System.out.println("Scheissee");
+        }else{
+            System.out.println("AAASASSASA");
+            System.out.println(target.toString());
+
+        }*/
     }
 }

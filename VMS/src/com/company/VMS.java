@@ -69,13 +69,20 @@ public class VMS {
     }
 
     public User getUserByEmail(String email){
-        for(int i =0 ; i< users.size(); i++){
-            if(users.get(i).getUserEmail() == email){
-                return users.get(i);
+        for(int i =0 ; i< getUsers().size(); i++){
+            if(getUsers().get(i).getUserEmail().equals(email)){
+                return getUsers().get(i);
             }
+        }
+
+        return null;
+    }
+    public User getUserById(Integer id){
+        for(int i = 0; i < getUsers().size(); i++){
+            if(getUsers().get(i).getUserId() == id)
+                return getUsers().get(i);
         }
         return null;
     }
-
 
 }

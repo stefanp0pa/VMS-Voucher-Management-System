@@ -30,7 +30,7 @@ public class Campaign {
     private Vector<User> observers;
 
     private Integer voucherId = 1;
-    private static Integer voucherCode = 999;
+    private static Integer voucherCode = 1000;
 
 
     public Campaign(Integer campaignId,
@@ -86,7 +86,7 @@ public class Campaign {
                     this.campaignId,
                     email);
         }
-        if(voucherType.equals("LoyalityVoucher")){
+        if(voucherType.equals("LoyaltyVoucher")){
             newVoucher = new LoyalityVoucher(
                     value,
                     voucherId,
@@ -99,9 +99,12 @@ public class Campaign {
 
         if(user!=null){
             if(!this.observers.contains(user)){
-                addObserver(VMS.getInstance().getUserByEmail(email));
+                addObserver(user);
             }
+            System.out.println("TREBUIA SA FIE CEVA AICI");
             user.getReceivedVouchers().addVoucher(newVoucher);
+        }else{
+            System.out.println("Bulsshit!!");
         }
 
         this.campaignVoucherMap
@@ -177,7 +180,7 @@ public class Campaign {
 
     public Integer getCampaignId(){return this.campaignId;}
 
-    //public CampaignVoucherMap getCampaignVoucherMap(){return this.campaignVoucherMap;}
+    public CampaignVoucherMap getCampaignVoucherMap(){return this.campaignVoucherMap;}
 
     public Date getStartDate(){return this.startDate;}
     public Date getEndDate(){return this.endDate;}
