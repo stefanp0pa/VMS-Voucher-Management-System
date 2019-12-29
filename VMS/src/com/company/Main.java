@@ -56,10 +56,37 @@ public class Main {
        }
 
        uvm.size();*/
+
         try {
-            InputParser.getInstance().parseCampaignInput("D:\\Facultate\\Sem1\\POO\\VMS-Voucher-Management-System\\VMStests\\test04\\input\\campaigns.txt");
+            InputParser.getInstance().parseUsersInput("D:\\Facultate\\Sem1\\POO\\VMS-Voucher-Management-System\\VMStests\\test09\\input\\users.txt");
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        try {
+            InputParser.getInstance().parseCampaignInput("D:\\Facultate\\Sem1\\POO\\VMS-Voucher-Management-System\\VMStests\\test09\\input\\campaigns.txt");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        Vector<User> users = VMS.getInstance().getUsers();
+        Vector<Campaign> campaigns = VMS.getInstance().getCampaigns();
+
+        for(int i = 0; i < users.size(); i++){
+            System.out.println(users.get(i).toString());
+            System.out.println();
+        }
+
+        for(int i = 0; i < campaigns.size(); i++){
+            System.out.println(campaigns.get(i).toString());
+            System.out.println();
+        }
+
+        /*
+        try {
+            InputParser.getInstance().parseEventsInput("D:\\Facultate\\Sem1\\POO\\VMS-Voucher-Management-System\\VMStests\\test03\\input\\events.txt");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }*/
     }
 }

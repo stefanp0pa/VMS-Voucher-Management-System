@@ -25,7 +25,15 @@ public class VMS {
     private Vector<User> users = new Vector<>();
 
     public Vector<Campaign> getCampaigns(){return this.campaigns;}
-    public Campaign getCampaign(Integer id){return null;}
+
+    public Campaign getCampaign(Integer id){
+        for(int i = 0; i < campaigns.size(); i++){
+            if(campaigns.get(i).getCampaignId() == id)
+                return campaigns.get(i);
+        }
+        return null;
+    }
+
     public void addCampaign(Campaign campaign){this.campaigns.add(campaign);}
 
     public void updateCampaign(Integer id, Campaign campaign){}

@@ -78,7 +78,7 @@ public class Campaign {
         Integer voucherId = Campaign.voucherId++;
         Voucher newVoucher = null;
 
-        if(voucherType.equals("Gift")){
+        if(voucherType.equals("GiftVoucher")){
             newVoucher = new GitfVoucher(
                     value,
                     voucherId,
@@ -86,7 +86,7 @@ public class Campaign {
                     this.campaignId,
                     email);
         }
-        if(voucherType.equals("Loyality")){
+        if(voucherType.equals("LoyalityVoucher")){
             newVoucher = new LoyalityVoucher(
                     value,
                     voucherId,
@@ -201,4 +201,17 @@ public class Campaign {
     public void setStrategyType(IStrategy strategyType){this.strategyType = strategyType;}
 
     public void executeStrategy(){this.strategyType.execute(this);}
+
+    public String toString(){
+        StringBuilder sb = new StringBuilder();
+        sb.append("This is the campaign ");
+        sb.append(this.campaignId);
+        sb.append(" :\n");
+        sb.append("Name: " + this.campaignName + "\n");
+        sb.append("Description: " + this.campaignDescription + "\n");
+        sb.append("StartDate: " + this.startDate + "\n");
+        sb.append("EndDate: " + this.endDate + "\n");
+        sb.append("Strategy: " + this.strategyType.toString() + "\n");
+        return sb.toString();
+    }
 }

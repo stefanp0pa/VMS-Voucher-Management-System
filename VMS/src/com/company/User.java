@@ -45,4 +45,15 @@ public class User {
         userNotifications.add(notification);
     }
 
+    public String toString(){
+        StringBuilder sb = new StringBuilder();
+        sb.append("This is the user: ");
+        sb.append("ID: " + this.userId + "\n");
+        sb.append("Name: " + this.userName + "\n");
+        sb.append("Email: " + this.userEmail + "\n");
+        sb.append("Password: " + this.userPassword + "\n");
+        sb.append("Type: " + this.userType + "\n");
+        return sb.toString();
+    }
+
 }
