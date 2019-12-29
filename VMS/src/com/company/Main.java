@@ -58,19 +58,19 @@ public class Main {
        uvm.size();*/
 
         try {
-            InputParser.parseUsersInput("D:\\Facultate\\Sem1\\POO\\VMS-Voucher-Management-System\\VMStests\\test09\\input\\users.txt");
+            InputParser.parseUsersInput("D:\\Facultate\\Sem1\\POO\\VMS-Voucher-Management-System\\VMStests\\test02\\input\\users.txt");
         } catch (IOException e) {
             e.printStackTrace();
         }
 
         try {
-            InputParser.parseCampaignInput("D:\\Facultate\\Sem1\\POO\\VMS-Voucher-Management-System\\VMStests\\test09\\input\\campaigns.txt");
+            InputParser.parseCampaignInput("D:\\Facultate\\Sem1\\POO\\VMS-Voucher-Management-System\\VMStests\\test02\\input\\campaigns.txt");
         } catch (IOException e) {
             e.printStackTrace();
         }
 
         try {
-            InputParser.parseEventsInput("D:\\Facultate\\Sem1\\POO\\VMS-Voucher-Management-System\\VMStests\\test09\\input\\events.txt");
+            InputParser.parseEventsInput("D:\\Facultate\\Sem1\\POO\\VMS-Voucher-Management-System\\VMStests\\test02\\input\\events.txt");
         } catch (IOException e) {
             e.printStackTrace();
         }
