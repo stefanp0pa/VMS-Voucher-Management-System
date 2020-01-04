@@ -35,7 +35,7 @@ public class User {
     public Integer getUserId(){return this.userId;}
     public String getUserName(){return  this.userName;}
     public String getUserEmail(){return  this.userEmail;}
-    public String getUserPassword(){return  this.userEmail;}
+    public String getUserPassword(){return  this.userPassword;}
     public UserType getUserType(){return this.userType;}
     public UserVoucherMap getReceivedVouchers(){return this.receivedVouchers;}
 

@@ -32,6 +32,8 @@ public class LoadFilesFrame extends JFrame implements ActionListener {
 
     private String defaultChooserPath = null;
 
+    private Color panelBackgroundColor = new Color(210,234,238);
+
     public LoadFilesFrame(){
 
         try {
@@ -41,14 +43,17 @@ public class LoadFilesFrame extends JFrame implements ActionListener {
         }
 
         initializeComponents();
+        setUpFrame();
+    }
+
+    private void setUpFrame(){
         setSize(600,250);
-        //setContentPane(mainPanel);
         setLayout(new FlowLayout());
         getContentPane().setBackground(new Color(210,234,238));
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setResizable(false);
         centerFrame();
-        this.setTitle("Voucher Management System");
+        setTitle("Voucher Management System");
         setVisible(true);
     }
 
@@ -79,12 +84,12 @@ public class LoadFilesFrame extends JFrame implements ActionListener {
         loadButtonPanel.setBorder(new EmptyBorder(20,0,0,0));
 
         mainPanel.setLayout(new BoxLayout(mainPanel,BoxLayout.Y_AXIS));
-        mainPanel.setBackground(new Color(210,234,238));
-        usersLabelPanel.setBackground(new Color(210,234,238));
-        usersFileChoosePanel.setBackground(new Color(210,234,238));
-        campaignsLabelPanel.setBackground(new Color(210,234,238));
-        campaignsFileChoosePanel.setBackground(new Color(210,234,238));
-        loadButtonPanel.setBackground(new Color(210,234,238));
+        mainPanel.setBackground(panelBackgroundColor);
+        usersLabelPanel.setBackground(panelBackgroundColor);
+        usersFileChoosePanel.setBackground(panelBackgroundColor);
+        campaignsLabelPanel.setBackground(panelBackgroundColor);
+        campaignsFileChoosePanel.setBackground(panelBackgroundColor);
+        loadButtonPanel.setBackground(panelBackgroundColor);
 
         this.add(mainPanel);
         mainPanel.add(usersLabelPanel);
@@ -157,7 +162,6 @@ public class LoadFilesFrame extends JFrame implements ActionListener {
         loadButtonPanel.add(loadButton);
     }
 
-
     @Override
     public void actionPerformed(ActionEvent e) {
 
@@ -208,6 +212,7 @@ public class LoadFilesFrame extends JFrame implements ActionListener {
             JOptionPane.showMessageDialog(this,"Succesfully loaded");
             parseFiles();
             this.setVisible(false);
+            new LoginFrame();
         }else{
             JOptionPane.showMessageDialog(this,"Did not load all necessary files");
         }

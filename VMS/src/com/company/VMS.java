@@ -84,5 +84,12 @@ public class VMS {
         }
         return null;
     }
-
+    public User getUserByName(String name){
+        for(int i = 0; i < users.size(); i++){
+            if(users.get(i).getUserName().compareTo(name) == 0){
+                return users.get(i);
+            }
+        }
+        return null;
+    }
 }
