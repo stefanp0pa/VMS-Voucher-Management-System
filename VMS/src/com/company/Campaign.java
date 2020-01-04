@@ -24,7 +24,7 @@ public class Campaign {
     private CampaignVoucherMap campaignVoucherMap;
     private CampaignStatusType campaignStatusType;
 
-    //private Vector<Voucher> vouchers;
+    private Vector<Voucher> vouchers = new Vector<>();
     //private Set<User> observers; //we dont want any user duplicates
 
     private Vector<User> observers;
@@ -107,42 +107,23 @@ public class Campaign {
             System.out.println("Bulsshit!!");
         }
 
+        this.vouchers.add(newVoucher);
+
         this.campaignVoucherMap
                 .addVoucher(newVoucher);
     }
 
     public boolean redeemVoucher(String code, Date date){
-        if(code == null || date == null)
-            return false;
-        Voucher target = null;
 
-        Set<Map.Entry<String,Vector<Voucher>>> entries = this.campaignVoucherMap.entrySet();
-        for(Map.Entry<String,Vector<Voucher>> e: entries){
-            Vector<Voucher> e_value = e.getValue();
-            for(int j = 0; j <e_value.size(); j++){
-                if(e_value.get(j).getVoucherCode() == code){
-                    target = e_value.get(j);
-                    break;
-                }
-            }
-            if(target!=null)
-                break;
-        }
-
-        if(target==null)
-            return false;
+        Voucher v = getVoucherByCode(code);
 
         // voucher marcat si eliminat din dictionar
-        if(!markUsedVoucher(target,date))
+        if(!markUsedVoucher(v,date))
             return false;
 
         // se verifica daca userul mai are cel putin un voucher in cadrul campaniei
-        if(this.campaignVoucherMap.get(target.getEmail()).size()<=0){
-            for(int i = 0; i < this.observers.size(); i++){
-                if(this.observers.get(i).getUserEmail() == target.getEmail()){
-                    removeObserver(this.observers.get(i));
-                }
-            }
+        if(this.campaignVoucherMap.get(v.getEmail()).size()<=0){
+            removeObserver(getObserverByEmail(v.getEmail()));
         }
         return true;
     }
@@ -156,7 +137,7 @@ public class Campaign {
             return false;
         if(date.after(this.endDate))
             return false;
-        if(date.compareTo(this.endDate)!=0)
+        if(date.compareTo(this.endDate)==0)
             return false;
         v.setUsedDate(date);
         v.setVoucherStatusType(Voucher.VoucherStatusType.USED);
@@ -184,6 +165,33 @@ public class Campaign {
 
     public Date getStartDate(){return this.startDate;}
     public Date getEndDate(){return this.endDate;}
+
+    public Vector<Voucher> getVouchers(){return this.vouchers;}
+    public Voucher getVoucherById(Integer voucherId){
+        for(int i = 0; i < this.vouchers.size(); i++){
+            if(vouchers.get(i).getVoucherId() == voucherId){
+                return vouchers.get(i);
+            }
+        }
+        return null;
+    }
+    public Voucher getVoucherByCode(String code){
+        for(int i = 0; i < vouchers.size(); i++){
+            if(vouchers.get(i).getVoucherCode().equals(code)){
+                return vouchers.get(i);
+            }
+        }
+        return null;
+    }
+
+    public User getObserverByEmail(String email){
+        for(int i = 0; i < this.observers.size(); i++){
+            if(this.observers.get(i).getUserEmail().equals(email)){
+                return this.observers.get(i);
+            }
+        }
+        return null;
+    }
 
     public CampaignStatusType getCampaignStatusType(){return this.campaignStatusType;}
     public void setCampaignStatusType(CampaignStatusType newStatus){this.campaignStatusType = newStatus;}

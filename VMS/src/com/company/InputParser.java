@@ -203,7 +203,7 @@ public class InputParser {
                     break;
 
                 case "redeemVoucher":
-                    parseRedeemVoucherEvent(scanner);
+                    parseRedeemVoucherEvent(userId,scanner);
                     break;
 
                 case "getVouchers":
@@ -262,7 +262,7 @@ public class InputParser {
         return true;
     }
 
-    public static boolean parseRedeemVoucherEvent(Scanner scanner){
+    public static boolean parseRedeemVoucherEvent(Integer userId,Scanner scanner){
         scanner.useDelimiter(";");
         int campaignId = Integer.parseInt(scanner.next());
         int voucherId = Integer.parseInt(scanner.next());
@@ -281,8 +281,14 @@ public class InputParser {
         cal.set(year,month,day,hour,minutes,0);
         Date redeemDate = cal.getTime();
 
-        //System.out.println(redeemDate);
-        //VMS.getInstance().getCampaign(campaignId).redeemVoucher()....
+        if(VMS.getInstance().getUserById(userId).getUserType() == User.UserType.ADMIN){
+            String code = VMS.getInstance()
+                    .getCampaign(campaignId)
+                    .getVoucherById(voucherId)
+                    .getVoucherCode();
+            VMS.getInstance().getCampaign(campaignId)
+                    .redeemVoucher(code,redeemDate);
+        }
         return true;
     }
 
