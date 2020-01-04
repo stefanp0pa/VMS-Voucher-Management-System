@@ -2,6 +2,7 @@ package com.company;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -105,6 +106,9 @@ public class LoadFilesFrame extends JFrame implements ActionListener {
     private void initializeFileChoosers(){
         usersFileChooser = new JFileChooser(defaultChooserPath);
         campaignsFileChooser = new JFileChooser(defaultChooserPath);
+        FileNameExtensionFilter filter = new FileNameExtensionFilter("TEXT FILES", "txt", "text");
+        usersFileChooser.setFileFilter(filter);
+        campaignsFileChooser.setFileFilter(filter);
     }
 
     private void initializeButtons(){
@@ -202,8 +206,24 @@ public class LoadFilesFrame extends JFrame implements ActionListener {
         System.out.println("Loading files..");
         if(usersFile!=null && campaignsFile!=null){
             JOptionPane.showMessageDialog(this,"Succesfully loaded");
+            parseFiles();
+            this.setVisible(false);
         }else{
             JOptionPane.showMessageDialog(this,"Did not load all necessary files");
+        }
+    }
+
+    private void parseFiles(){
+        try {
+            InputParser.parseUsersInput(usersFile.getAbsolutePath());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            InputParser.parseCampaignInput(campaignsFile.getAbsolutePath());
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 

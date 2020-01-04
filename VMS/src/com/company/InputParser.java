@@ -246,7 +246,7 @@ public class InputParser {
         return true;
     }
 
-    public static boolean parseGenerateVoucherEvent(Integer userId, Scanner scanner){
+    private static boolean parseGenerateVoucherEvent(Integer userId, Scanner scanner){
         scanner.useDelimiter(";|(\\n)");
         int campaignId = Integer.parseInt(scanner.next());
         String email = scanner.next();
@@ -262,7 +262,7 @@ public class InputParser {
         return true;
     }
 
-    public static boolean parseRedeemVoucherEvent(Integer userId,Scanner scanner){
+    private static boolean parseRedeemVoucherEvent(Integer userId,Scanner scanner){
         scanner.useDelimiter(";");
         int campaignId = Integer.parseInt(scanner.next());
         int voucherId = Integer.parseInt(scanner.next());
@@ -292,7 +292,7 @@ public class InputParser {
         return true;
     }
 
-    public static boolean parseAddCampaignEvent(Scanner scanner){
+    private static boolean parseAddCampaignEvent(Scanner scanner){
         scanner.useDelimiter(";");
         int campaignId = Integer.parseInt(scanner.next());
         String campaignName = scanner.next();
@@ -339,7 +339,7 @@ public class InputParser {
         return true;
     }
 
-    public static boolean parseEditCampaignEvent(Scanner scanner){
+    private static boolean parseEditCampaignEvent(Scanner scanner){
         scanner.useDelimiter(";");
         int campaignId = Integer.parseInt(scanner.next());
         String campaignName = scanner.next();
@@ -386,18 +386,18 @@ public class InputParser {
         return true;
     }
 
-    public static boolean parseCancelCampaignEvent(Scanner scanner){
+    private static boolean parseCancelCampaignEvent(Scanner scanner){
         scanner.useDelimiter(";|(\\n)");
         int campaignId = Integer.parseInt(scanner.next());
         return true;
     }
 
-    public static boolean parseGetVouchersEvent(){
+    private static boolean parseGetVouchersEvent(){
         //
         return true;
     }
 
-    public static boolean parseGetObserversEvent(Scanner scanner){
+    private static boolean parseGetObserversEvent(Scanner scanner){
         scanner.useDelimiter(";|(\\n)");
         int campaignId = Integer.parseInt(scanner.next());
 
@@ -405,16 +405,15 @@ public class InputParser {
         return true;
     }
 
-    public static boolean parseGetNotificationsEvent(){
+    private static boolean parseGetNotificationsEvent(){
         // action
         return true;
     }
 
-    public static boolean parseGetVoucherEvent(Scanner scanner){
+    private static boolean parseGetVoucherEvent(Scanner scanner){
         scanner.useDelimiter(";|(\\n)");
         int campaignId = Integer.parseInt(scanner.next());
         return true;
     }
-
 
 }

@@ -56,7 +56,7 @@ public class Main {
        }
 
        uvm.size();*/
-
+/*
         try {
             InputParser.parseUsersInput("D:\\Facultate\\Sem1\\POO\\VMS-Voucher-Management-System\\VMStests\\test06\\input\\users.txt");
         } catch (IOException e) {
@@ -68,7 +68,7 @@ public class Main {
             System.out.println(users.get(i).toString());
         }*/
 
-        try {
+    /*    try {
             InputParser.parseCampaignInput("D:\\Facultate\\Sem1\\POO\\VMS-Voucher-Management-System\\VMStests\\test06\\input\\campaigns.txt");
         } catch (IOException e) {
             e.printStackTrace();
