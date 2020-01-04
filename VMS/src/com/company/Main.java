@@ -80,6 +80,16 @@ public class Main {
             e.printStackTrace();
         }
 
+        int campaignsCount = VMS.getInstance().getCampaigns().size();
+        for(int i = 0; i < campaignsCount; i++){
+            Vector<User> campaignObs = VMS.getInstance().getCampaigns().get(i).getObservers();
+            System.out.println("Campaign " + i);
+            for(int j = 0; j < campaignObs.size(); j++){
+                System.out.println(campaignObs.get(j).toString());
+            }
+            System.out.println();
+        }
+
         /*
         Vector<Campaign> campaigns = VMS.getInstance().getCampaigns();
         for(int i = 0; i < campaigns.size(); i++){
@@ -105,5 +115,7 @@ public class Main {
             System.out.println(target.toString());
 
         }*/
+
+        LoadFilesFrame lf = new LoadFilesFrame();
     }
 }
