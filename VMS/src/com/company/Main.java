@@ -117,6 +117,8 @@ public class Main {
         }*/
 
         LoadFilesFrame lf = new LoadFilesFrame();
+        //User a = new User(1,"Ana","ana","anna", User.UserType.GUEST);
+        //new GuestMainFrame(a);
         //LoginFrame lf = new LoginFrame();
     }
 }

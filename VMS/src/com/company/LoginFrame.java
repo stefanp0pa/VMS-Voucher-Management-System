@@ -21,6 +21,7 @@ public class LoginFrame extends JFrame implements ActionListener {
     private JPanel loginButtonPanel;
 
     private Color panelBackgroundColor = new Color(210,234,238);
+    private Color buttonBackgroundColor = new Color(73,195,158);
 
     /*private String usernameInput = null;
     private String passwordInput = null;*/
@@ -76,7 +77,7 @@ public class LoginFrame extends JFrame implements ActionListener {
     private void initializeButtons(){
         loginButton = new JButton("Login");
         loginButton.setFocusPainted(false);
-        loginButton.setBackground(new Color(73,195,158));
+        loginButton.setBackground(buttonBackgroundColor);
         loginButton.addActionListener(this);
     }
 
@@ -135,9 +136,9 @@ public class LoginFrame extends JFrame implements ActionListener {
                         JOptionPane.showMessageDialog(this, "Login succesful "+ user.getUserType());
                         setVisible(false);
                         if(user.getUserType() == User.UserType.ADMIN){
-                            new AdminMainFrame(user);
+                            new AdminMainFrame(user,this);
                         }else{
-                            new GuestMainFrame(user);
+                            new GuestMainFrame(user,this);
                         }
                     }else{
                         JOptionPane.showMessageDialog(this,"Wrong password for user " + user.getUserName()+"/n"+user.getUserPassword());
