@@ -5,6 +5,8 @@ import java.util.Vector;
 
 public class StrategyA implements IStrategy{
 
+    public static String strategyName = "A";
+
     @Override
     public void execute(Campaign c) {
 

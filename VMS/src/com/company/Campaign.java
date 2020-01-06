@@ -74,6 +74,14 @@ public class Campaign {
 */
     public void generateVoucher(String email,String voucherType,float value){
 
+        if(getCampaignStatusType() == CampaignStatusType.EXPIRED)
+            return;
+        if(getCampaignStatusType() == CampaignStatusType.CANCELLED)
+            return;
+        if(availableVouchersCount <= 0)
+            return;
+        availableVouchersCount--;
+
         Integer voucherCode = Campaign.voucherCode++;
         Integer voucherId = getNewVoucherId();
         Voucher newVoucher = null;
@@ -114,6 +122,13 @@ public class Campaign {
     }
 
     public boolean redeemVoucher(String code, Date date){
+
+        if(getCampaignStatusType() == CampaignStatusType.EXPIRED)
+            return false;
+        if(getCampaignStatusType() == CampaignStatusType.CANCELLED)
+            return false;
+        if(getCampaignStatusType() == CampaignStatusType.NEW)
+            return false;
 
         Voucher v = getVoucherByCode(code);
 
@@ -164,7 +179,25 @@ public class Campaign {
     public CampaignVoucherMap getCampaignVoucherMap(){return this.campaignVoucherMap;}
 
     public Date getStartDate(){return this.startDate;}
+    public void setStartDate(Date startDate){
+        this.startDate = startDate;
+        decideCampaignStatusType();
+    }
     public Date getEndDate(){return this.endDate;}
+    public void setEndDate(Date endDate){
+        this.endDate = endDate;
+        decideCampaignStatusType();
+    }
+
+    public String getCampaignName(){return this.campaignName;}
+    public void setCampaignName(String campaignName){this.campaignName = campaignName;}
+    public String getCampaignDescription(){return this.campaignDescription;}
+    public void setCampaignDescription(String campaignDescription){this.campaignDescription = campaignDescription;}
+
+    public Integer getTotalVouchersCount(){return this.totalVouchersCount;}
+    public Integer getAvailableVouchersCount(){return this.availableVouchersCount;}
+    public void setTotalVouchersCount(Integer totalVouchersCount){this.totalVouchersCount = totalVouchersCount;}
+    public void setAvailableVouchersCount(Integer availableVouchersCount){this.availableVouchersCount = availableVouchersCount;}
 
     public Vector<Voucher> getVouchers(){return this.vouchers;}
     public Voucher getVoucherById(Integer voucherId){
@@ -197,19 +230,34 @@ public class Campaign {
     public void setCampaignStatusType(CampaignStatusType newStatus){this.campaignStatusType = newStatus;}
 
     public void decideCampaignStatusType(){
+
+        if(getCampaignStatusType() == CampaignStatusType.CANCELLED){
+            return;
+        }
+
         Date appDate = VMS.getInstance().getApplicationStartDate();
         if(this.startDate.after(appDate)){
             this.setCampaignStatusType(CampaignStatusType.NEW);
             return;
         }
-        if(this.endDate.after(appDate)){
+        if(this.endDate.after(appDate) || appDate.after(this.startDate)){
             this.setCampaignStatusType(CampaignStatusType.STARTED);
             return;
         }
+        if(this.startDate.equals(appDate)){
+            this.setCampaignStatusType(CampaignStatusType.STARTED);
+            return;
+        }
+        if(this.endDate.equals(appDate)){
+            this.setCampaignStatusType(CampaignStatusType.EXPIRED);
+            return;
+        }
+
         this.setCampaignStatusType(CampaignStatusType.EXPIRED);
     }
 
     public void setStrategyType(IStrategy strategyType){this.strategyType = strategyType;}
+    public IStrategy getStrategyType(){return this.strategyType;}
 
     public void executeStrategy(){this.strategyType.execute(this);}
 

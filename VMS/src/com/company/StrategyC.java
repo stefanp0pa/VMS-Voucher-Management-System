@@ -4,6 +4,8 @@ import java.util.Vector;
 
 public class StrategyC implements IStrategy{
 
+    public static String strategyName = "C";
+
     @Override
     public void execute(Campaign c) {
         Vector<User> campaignObservers = c.getObservers();

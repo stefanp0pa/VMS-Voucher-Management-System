@@ -34,30 +34,52 @@ public class VMS {
         return null;
     }
 
-    public void addCampaign(Campaign campaign){this.campaigns.add(campaign);}
+    public void addCampaign(Campaign campaign){
+        Campaign target = getCampaignName(campaign.getCampaignName());
+        if(target!=null)
+            return;
+        this.campaigns.add(campaign);
+    }
 
-    public void updateCampaign(Integer id, Campaign campaign){}
+    public void updateCampaign(Integer id, Campaign campaign){
+        Campaign myCampaign = getCampaign(id);
+        if(myCampaign == null)
+            return;
+        if(myCampaign.getCampaignStatusType()== Campaign.CampaignStatusType.STARTED){
+            Integer myTotal = myCampaign.getTotalVouchersCount();
+            Integer myAvailable = myCampaign.getAvailableVouchersCount();
+            Integer myGiven = myTotal-myAvailable;
+            if(campaign.getTotalVouchersCount() > myGiven){
+                myCampaign.setTotalVouchersCount(campaign.getTotalVouchersCount());
+                myCampaign.setAvailableVouchersCount(campaign.getTotalVouchersCount() - myGiven);
+            }
+            myCampaign.setEndDate(campaign.getEndDate());
+            return;
+        }
+        if(myCampaign.getCampaignStatusType() == Campaign.CampaignStatusType.NEW){
+            myCampaign.setCampaignName(campaign.getCampaignName());
+            myCampaign.setCampaignDescription(campaign.getCampaignDescription());
+            myCampaign.setStrategyType(campaign.getStrategyType());
+            myCampaign.setStartDate(campaign.getStartDate());
+            myCampaign.setEndDate(campaign.getEndDate());
+            myCampaign.setTotalVouchersCount(campaign.getTotalVouchersCount());
+            myCampaign.setAvailableVouchersCount(campaign.getTotalVouchersCount());
+            if(campaign.getCampaignStatusType() == Campaign.CampaignStatusType.CANCELLED){
+                myCampaign.setCampaignStatusType(Campaign.CampaignStatusType.CANCELLED);
+            }
+            return;
+        }
+    }
 
     public void cancelCampaign(Integer id){
-        Campaign target = null;
-        for(int i = 0; i < this.campaigns.size(); i++){
-            if(this.campaigns.get(i).getCampaignId() == id){
-                target = this.campaigns.get(i);
-                break;
-            }
-        }
-        if(target==null)
+        Campaign campaign = getCampaign(id);
+        if(campaign == null)
             return;
-
-        if(target.getCampaignStatusType() == Campaign.CampaignStatusType.STARTED){
-            target.setCampaignStatusType(Campaign.CampaignStatusType.CANCELLED);
+        if(campaign.getCampaignStatusType() == Campaign.CampaignStatusType.EXPIRED)
             return;
-        }
-
-        if(target.getCampaignStatusType() == Campaign.CampaignStatusType.NEW){
-            target.setCampaignStatusType(Campaign.CampaignStatusType.CANCELLED);
+        if(campaign.getCampaignStatusType() == Campaign.CampaignStatusType.CANCELLED)
             return;
-        }
+        campaign.setCampaignStatusType(Campaign.CampaignStatusType.CANCELLED);
     }
 
     public Vector<User> getUsers(){return this.users;}
@@ -74,7 +96,6 @@ public class VMS {
                 return getUsers().get(i);
             }
         }
-
         return null;
     }
     public User getUserById(Integer id){
@@ -88,6 +109,15 @@ public class VMS {
         for(int i = 0; i < users.size(); i++){
             if(users.get(i).getUserName().compareTo(name) == 0){
                 return users.get(i);
+            }
+        }
+        return null;
+    }
+
+    public Campaign getCampaignName(String name){
+        for(int i =0; i<campaigns.size(); i++){
+            if(campaigns.get(i).getCampaignName().compareTo(name)==0){
+                return campaigns.get(i);
             }
         }
         return null;
