@@ -1,5 +1,6 @@
 package com.company;
 
+import javax.swing.*;
 import java.io.IOException;
 import java.util.Calendar;
 import java.util.Date;
@@ -120,5 +121,7 @@ public class Main {
         //User a = new User(1,"Ana","ana","anna", User.UserType.GUEST);
         //new GuestMainFrame(a);
         //LoginFrame lf = new LoginFrame();
+
+        //new CampaignsAdminFrame(a, new JFrame());
     }
 }

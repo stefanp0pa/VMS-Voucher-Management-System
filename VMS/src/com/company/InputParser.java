@@ -132,7 +132,7 @@ public class InputParser {
             String strategyType = scanner.next();
             //System.out.println(strategyType);
 
-            IStrategy strategy = null;
+            Strategy strategy = null;
             switch (strategyType){
                 case "A":
                     //System.out.println("A strategy");

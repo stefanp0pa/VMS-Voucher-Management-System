@@ -2,9 +2,11 @@ package com.company;
 
 import java.util.Vector;
 
-public class StrategyC implements IStrategy{
+public class StrategyC extends Strategy {
 
-    public static String strategyName = "C";
+    public StrategyC(){
+        strategyName = "C";
+    }
 
     @Override
     public void execute(Campaign c) {

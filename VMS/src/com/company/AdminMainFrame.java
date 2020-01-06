@@ -161,9 +161,17 @@ public class AdminMainFrame extends JFrame implements ActionListener {
         if(e.getSource() == signOutButton){
             previousFrame.setVisible(true);
             this.dispose();
-        }else if(e.getSource() == exitAppButton){
+            return;
+        }
+        if(e.getSource() == exitAppButton){
             this.setDefaultCloseOperation(EXIT_ON_CLOSE);
             this.dispose();
+            return;
         }
+        if(e.getSource() == adminCampaignsButton){
+            this.setVisible(false);
+            new CampaignsAdminFrame(user,this);
+        }
+
     }
 }

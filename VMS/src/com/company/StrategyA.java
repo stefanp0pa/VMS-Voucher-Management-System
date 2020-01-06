@@ -3,9 +3,11 @@ package com.company;
 import java.util.Random;
 import java.util.Vector;
 
-public class StrategyA implements IStrategy{
+public class StrategyA extends Strategy {
 
-    public static String strategyName = "A";
+    public StrategyA(){
+        strategyName = "A";
+    }
 
     @Override
     public void execute(Campaign c) {

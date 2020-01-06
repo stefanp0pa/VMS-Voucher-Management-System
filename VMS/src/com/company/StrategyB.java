@@ -5,9 +5,11 @@ import java.util.Iterator;
 import java.util.Set;
 import java.util.Vector;
 
-public class StrategyB implements IStrategy{
+public class StrategyB extends Strategy {
 
-    public static String strategyName = "B";
+    public StrategyB(){
+        strategyName = "B";
+    }
 
     @Override
     public void execute(Campaign c) {

@@ -19,7 +19,7 @@ public class Campaign {
     private Integer totalVouchersCount;
     private Integer availableVouchersCount;
 
-    private IStrategy strategyType;
+    private Strategy strategyType;
 
     private CampaignVoucherMap campaignVoucherMap;
     private CampaignStatusType campaignStatusType;
@@ -39,7 +39,7 @@ public class Campaign {
                     Date startDate,
                     Date endDate,
                     Integer totalVouchersCount,
-                    IStrategy strategyType){
+                    Strategy strategyType){
         this.campaignId = campaignId;
         this.campaignName = campaignName;
         this.campaignDescription = campaignDescription;
@@ -256,8 +256,8 @@ public class Campaign {
         this.setCampaignStatusType(CampaignStatusType.EXPIRED);
     }
 
-    public void setStrategyType(IStrategy strategyType){this.strategyType = strategyType;}
-    public IStrategy getStrategyType(){return this.strategyType;}
+    public void setStrategyType(Strategy strategyType){this.strategyType = strategyType;}
+    public Strategy getStrategyType(){return this.strategyType;}
 
     public void executeStrategy(){this.strategyType.execute(this);}
 
