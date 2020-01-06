@@ -57,7 +57,7 @@ public class Main {
        }
 
        uvm.size();*/
-/*
+
         try {
             InputParser.parseUsersInput("D:\\Facultate\\Sem1\\POO\\VMS-Voucher-Management-System\\VMStests\\test06\\input\\users.txt");
         } catch (IOException e) {
@@ -69,12 +69,12 @@ public class Main {
             System.out.println(users.get(i).toString());
         }*/
 
-    /*    try {
+        try {
             InputParser.parseCampaignInput("D:\\Facultate\\Sem1\\POO\\VMS-Voucher-Management-System\\VMStests\\test06\\input\\campaigns.txt");
         } catch (IOException e) {
             e.printStackTrace();
         }
-
+/*
         try {
             InputParser.parseEventsInput("D:\\Facultate\\Sem1\\POO\\VMS-Voucher-Management-System\\VMStests\\test06\\input\\events.txt");
         } catch (IOException e) {
@@ -117,11 +117,11 @@ public class Main {
 
         }*/
 
-        LoadFilesFrame lf = new LoadFilesFrame();
-        //User a = new User(1,"Ana","ana","anna", User.UserType.GUEST);
+        //LoadFilesFrame lf = new LoadFilesFrame();
+        User a = new User(1,"Ana","ana","anna", User.UserType.GUEST);
         //new GuestMainFrame(a);
         //LoginFrame lf = new LoginFrame();
 
-        //new CampaignsAdminFrame(a, new JFrame());
+        new CampaignsAdminFrame(a, new JFrame());
     }
 }

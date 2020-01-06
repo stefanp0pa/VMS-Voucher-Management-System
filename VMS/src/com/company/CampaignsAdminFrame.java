@@ -35,6 +35,35 @@ public class CampaignsAdminFrame extends JFrame implements ActionListener {
     private JTable campaignsTable;
     private JScrollPane scrollPane;
 
+    private JButton giveDetailsButton;
+
+    private JLabel campaignIdLabel;
+    private JLabel campaignNameLabel;
+    private JLabel campaignDescriptionLabel;
+    private JLabel campaignStartDateLabel;
+    private JLabel campaignEndDateLabel;
+    private JLabel totalVouchersLabel;
+    private JLabel availableVouchersLabel;
+    private JLabel strategyLabel;
+
+    private JTextField campaignIdTextField;
+    private JTextField campaignNameTextField;
+    private JTextField campaignDescriptionTextField;
+    private JTextField campaignStartDateTextField;
+    private JTextField campaignEndDateTextField;
+    private JTextField totalVouchersTextField;
+    private JTextField availableVouchersTextField;
+    private JTextField strategyTextField;
+
+    private JPanel campaignIdPanel;
+    private JPanel campaignNamePanel;
+    private JPanel campaignDescriptionPanel;
+    private JPanel campaignStartDatePanel;
+    private JPanel campaignEndDatePanel;
+    private JPanel totalVouchersPanel;
+    private JPanel availableVouchersPanel;
+    private JPanel strategyPanel;
+
     private JFrame previousFrame;
 
     private Color panelBackgroundColor = new Color(210,234,238);
@@ -57,7 +86,7 @@ public class CampaignsAdminFrame extends JFrame implements ActionListener {
     }
 
     private void setUpFrame(){
-        setSize(1200,435);
+        setSize(1200,500);
         setTitle("Voucher Management System - Campaigns Panel");
         centerFrame();
         setLayout(new FlowLayout());
@@ -73,9 +102,44 @@ public class CampaignsAdminFrame extends JFrame implements ActionListener {
 
     private void initializeComponents(){
         initializeButtons();
+        initializeLabels();
+        initializeTextField();
         initializePanels();
         addComponentsToMasterPanel();
         //listCampaignsButtonAction();
+    }
+
+    private void initializeTextField(){
+        campaignIdTextField = new JTextField(3);
+        campaignNameTextField = new JTextField(10);
+        campaignDescriptionTextField = new JTextField(20);
+        campaignStartDateTextField = new JTextField(10);
+        campaignEndDateTextField = new JTextField(10);
+        totalVouchersTextField = new JTextField(5);
+        availableVouchersTextField = new JTextField(5);
+        strategyTextField = new JTextField(3);
+
+        campaignIdTextField.setBackground(Color.WHITE);
+        campaignNameTextField.setBackground(Color.WHITE);
+        campaignDescriptionTextField.setBackground(Color.WHITE);
+        campaignStartDateTextField.setBackground(Color.WHITE);
+        campaignEndDateTextField.setBackground(Color.WHITE);
+        totalVouchersTextField.setBackground(Color.WHITE);
+        availableVouchersTextField.setBackground(Color.WHITE);
+        strategyTextField.setBackground(Color.WHITE);
+
+
+    }
+
+    private void initializeLabels(){
+        campaignIdLabel = new JLabel("ID: ");
+        campaignNameLabel = new JLabel("Campaign Name: ");
+        campaignDescriptionLabel = new JLabel("Campaign Description: ");
+        campaignStartDateLabel = new JLabel("Start Date: ");
+        campaignEndDateLabel = new JLabel("End Date: ");
+        totalVouchersLabel = new JLabel("Total Vouchers: ");
+        availableVouchersLabel = new JLabel("Available Vouchers: ");
+        strategyLabel = new JLabel("Strategy: ");
     }
 
     private void initializeTable(Object[][] data){
@@ -84,9 +148,9 @@ public class CampaignsAdminFrame extends JFrame implements ActionListener {
         campaignsTable.getColumnModel().getColumn(0).setPreferredWidth(40);
         campaignsTable.getColumnModel().getColumn(1).setPreferredWidth(200);
         campaignsTable.getColumnModel().getColumn(2).setPreferredWidth(200);
-        campaignsTable.getColumnModel().getColumn(3).setPreferredWidth(100);
-        campaignsTable.getColumnModel().getColumn(4).setPreferredWidth(100);
-        campaignsTable.getColumnModel().getColumn(5).setPreferredWidth(100);
+        campaignsTable.getColumnModel().getColumn(3).setPreferredWidth(140);
+        campaignsTable.getColumnModel().getColumn(4).setPreferredWidth(140);
+        campaignsTable.getColumnModel().getColumn(5).setPreferredWidth(60);
         campaignsTable.setPreferredScrollableViewportSize(campaignsTable.getPreferredSize());
 
         scrollPane = new JScrollPane(campaignsTable,
@@ -113,6 +177,7 @@ public class CampaignsAdminFrame extends JFrame implements ActionListener {
         detailCampaignButton = new JButton("Detaliaza campanie");
         sortByNameButton = new JButton("Sort name");
         sortByStartButton = new JButton("Sort start");
+        giveDetailsButton = new JButton("Details!");
 
         backButton.setFocusPainted(false);
         listCampaignsButton.setFocusPainted(false);
@@ -122,6 +187,7 @@ public class CampaignsAdminFrame extends JFrame implements ActionListener {
         detailCampaignButton.setFocusPainted(false);
         sortByStartButton.setFocusPainted(false);
         sortByNameButton.setFocusPainted(false);
+        giveDetailsButton.setFocusPainted(false);
 
         backButton.setBackground(buttonBackgroundColor);
         listCampaignsButton.setBackground(buttonBackgroundColor);
@@ -131,6 +197,7 @@ public class CampaignsAdminFrame extends JFrame implements ActionListener {
         detailCampaignButton.setBackground(buttonBackgroundColor);
         sortByStartButton.setBackground(buttonBackgroundColor);
         sortByNameButton.setBackground(buttonBackgroundColor);
+        giveDetailsButton.setBackground(buttonBackgroundColor);
 
         backButton.addActionListener(this);
         listCampaignsButton.addActionListener(this);
@@ -140,6 +207,7 @@ public class CampaignsAdminFrame extends JFrame implements ActionListener {
         detailCampaignButton.addActionListener(this);
         sortByNameButton.addActionListener(this);
         sortByStartButton.addActionListener(this);
+        giveDetailsButton.addActionListener(this);
     }
 
     private void initializePanels() {
@@ -151,6 +219,15 @@ public class CampaignsAdminFrame extends JFrame implements ActionListener {
         cancelCampaignPanel = new JPanel();
         detailCampaignPanel = new JPanel();
         sortButtonsPanel = new JPanel();
+
+        campaignIdPanel = new JPanel();
+        campaignNamePanel = new JPanel();
+        campaignDescriptionPanel = new JPanel();
+        campaignStartDatePanel = new JPanel();
+        campaignEndDatePanel = new JPanel();
+        totalVouchersPanel = new JPanel();
+        availableVouchersPanel = new JPanel();
+        strategyPanel = new JPanel();
 
         detailPanel.setLayout(new FlowLayout());
         //backButtonPanel.setBorder(new EmptyBorder(20,10,0,10));
@@ -165,8 +242,8 @@ public class CampaignsAdminFrame extends JFrame implements ActionListener {
         masterPanel.setLayout(new BoxLayout(masterPanel, BoxLayout.Y_AXIS));
         detailPanel.setLayout(new BoxLayout(detailPanel, BoxLayout.Y_AXIS));
 
-        masterPanel.setPreferredSize(new Dimension(300, 300));
-        detailPanel.setPreferredSize(new Dimension(850, 400));
+        masterPanel.setPreferredSize(new Dimension(300, 350));
+        detailPanel.setPreferredSize(new Dimension(850, 450));
 
         getContentPane().setBackground(panelBackgroundColor);
         masterPanel.setBackground(panelBackgroundColor);
@@ -176,6 +253,7 @@ public class CampaignsAdminFrame extends JFrame implements ActionListener {
         updateCampaignPanel.setBackground(panelBackgroundColor);
         cancelCampaignPanel.setBackground(panelBackgroundColor);
         detailCampaignPanel.setBackground(panelBackgroundColor);
+
 
         this.add(masterPanel);
         this.add(detailPanel);
@@ -212,6 +290,11 @@ public class CampaignsAdminFrame extends JFrame implements ActionListener {
             return;
         }
         if(e.getSource()==detailCampaignButton){
+            detailCampaignButtonAction();
+            return;
+        }
+        if(e.getSource()==giveDetailsButton){
+            giveDetailsButtonAction();
             return;
         }
     }
@@ -224,12 +307,10 @@ public class CampaignsAdminFrame extends JFrame implements ActionListener {
     }
 
     private void listCampaignsButtonAction(){
-
         emptyDetailPanel();
-
         Vector<Campaign> campaigns = VMS.getInstance().getCampaigns();
         Object[][] data = new Object[campaigns.size()][6];
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm");
         for(int i = 0; i < campaigns.size(); i++){
             data[i][0] = campaigns.get(i).getCampaignId();
             data[i][1] = campaigns.get(i).getCampaignName();
@@ -238,14 +319,77 @@ public class CampaignsAdminFrame extends JFrame implements ActionListener {
             data[i][4] = (sdf.format(campaigns.get(i).getEndDate())).toString();
             data[i][5] = campaigns.get(i).getStrategyType().strategyName;
         }
-        for(int i = 0; i < campaigns.size(); i++){
-            for(int j = 0; j < 6; j++){
-                System.out.print(data[i][j] + "  ");
-            }
-            System.out.println();
-        }
-
         initializeTable(data);
+    }
+
+    private void detailCampaignButtonAction(){
+        emptyDetailPanel();
+        detailPanel.setLayout(new BoxLayout(detailPanel, BoxLayout.Y_AXIS));
+        detailPanel.add(campaignIdPanel);
+        detailPanel.add(campaignNamePanel);
+        detailPanel.add(campaignDescriptionPanel);
+        detailPanel.add(campaignStartDatePanel);
+        detailPanel.add(campaignEndDatePanel);
+        detailPanel.add(totalVouchersPanel);
+        detailPanel.add(availableVouchersPanel);
+        detailPanel.add(strategyPanel);
+
+        campaignIdPanel.setLayout(new FlowLayout());
+        campaignIdPanel.add(campaignIdLabel);
+        campaignIdPanel.add(campaignIdTextField);
+        campaignIdPanel.add(giveDetailsButton);
+
+        campaignNamePanel.setLayout(new FlowLayout());
+        campaignNamePanel.add(campaignNameLabel);
+        campaignNamePanel.add(campaignNameTextField);
+
+        campaignDescriptionPanel.setLayout(new FlowLayout());
+        campaignDescriptionPanel.add(campaignDescriptionLabel);
+        campaignDescriptionPanel.add(campaignDescriptionTextField);
+
+        campaignStartDatePanel.setLayout(new FlowLayout());
+        campaignStartDatePanel.add(campaignStartDateLabel);
+        campaignStartDatePanel.add(campaignStartDateTextField);
+
+        campaignEndDatePanel.setLayout(new FlowLayout());
+        campaignEndDatePanel.add(campaignEndDateLabel);
+        campaignEndDatePanel.add(campaignEndDateTextField);
+
+        totalVouchersPanel.setLayout(new FlowLayout());
+        totalVouchersPanel.add(totalVouchersLabel);
+        totalVouchersPanel.add(totalVouchersTextField);
+
+        availableVouchersPanel.setLayout(new FlowLayout());
+        availableVouchersPanel.add(availableVouchersLabel);
+        availableVouchersPanel.add(availableVouchersTextField);
+
+        strategyPanel.setLayout(new FlowLayout());
+        strategyPanel.add(strategyLabel);
+        strategyPanel.add(strategyTextField);
+
+        detailPanel.repaint();
+        detailPanel.revalidate();
+    }
+
+    private void giveDetailsButtonAction(){
+        String id = campaignIdTextField.getText();
+        if(id == null || id.isEmpty()){
+            JOptionPane.showMessageDialog(this,"Provide an ID");
+            return;
+        }
+        Campaign campaign = VMS.getInstance().getCampaign(Integer.parseInt(id));
+        if(campaign == null){
+            JOptionPane.showMessageDialog(this,"Provide a valid ID");
+            return;
+        }
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm");
+        campaignNameTextField.setText(campaign.getCampaignName());
+        campaignDescriptionTextField.setText(campaign.getCampaignDescription());
+        campaignStartDateTextField.setText(sdf.format(campaign.getStartDate()).toString());
+        campaignEndDateTextField.setText(sdf.format(campaign.getEndDate()).toString());
+        strategyTextField.setText(campaign.getStrategyType().strategyName);
+        totalVouchersTextField.setText(campaign.getTotalVouchersCount().toString());
+        availableVouchersTextField.setText(campaign.getAvailableVouchersCount().toString());
     }
 
     private void emptyDetailPanel(){
