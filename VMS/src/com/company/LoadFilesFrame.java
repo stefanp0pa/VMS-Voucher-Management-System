@@ -12,27 +12,39 @@ import java.io.IOException;
 public class LoadFilesFrame extends JFrame implements ActionListener {
     private JLabel usersFileLabel;
     private JLabel campaignsFileLabel;
+    private JLabel eventsFileLabel;
+
     private JTextField usersPathTextField;
     private JTextField campaignsPathTextField;
+    private JTextField eventsPathTextField;
+
     private JFileChooser usersFileChooser;
     private JFileChooser campaignsFileChooser;
+    private JFileChooser eventsFileChooser;
+
     private JButton loadButton;
     private JButton usersChooserButton;
     private JButton campaignsChooserButton;
+    private JButton eventsChooserButton;
 
     private JPanel mainPanel;
     private JPanel usersLabelPanel;
     private JPanel usersFileChoosePanel;
     private JPanel campaignsLabelPanel;
     private JPanel campaignsFileChoosePanel;
+    private JPanel eventsLabelPanel;
+    private JPanel eventsFileChoosePanel;
     private JPanel loadButtonPanel;
 
     private File usersFile = null;
     private File campaignsFile = null;
+    private File eventsFile = null;
 
     private String defaultChooserPath = null;
 
     private Color panelBackgroundColor = new Color(210,234,238);
+    private Color fileChooserBackgroundColor = new Color(235,180,36);
+    private Color buttonBackgroundColor = new Color(73,195,158);
 
     public LoadFilesFrame(){
 
@@ -47,7 +59,7 @@ public class LoadFilesFrame extends JFrame implements ActionListener {
     }
 
     private void setUpFrame(){
-        setSize(600,250);
+        setSize(600,350);
         setLayout(new FlowLayout());
         getContentPane().setBackground(new Color(210,234,238));
         setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -77,10 +89,13 @@ public class LoadFilesFrame extends JFrame implements ActionListener {
         usersFileChoosePanel = new JPanel();
         campaignsLabelPanel = new JPanel(new BorderLayout());
         campaignsFileChoosePanel = new JPanel();
+        eventsLabelPanel = new JPanel(new BorderLayout());
+        eventsFileChoosePanel = new JPanel();
         loadButtonPanel = new JPanel();
 
         usersLabelPanel.setBorder(new EmptyBorder(20,55,0,10));
         campaignsLabelPanel.setBorder(new EmptyBorder(10,55,0,10));
+        eventsLabelPanel.setBorder(new EmptyBorder(10,55,0,10));
         loadButtonPanel.setBorder(new EmptyBorder(20,0,0,0));
 
         mainPanel.setLayout(new BoxLayout(mainPanel,BoxLayout.Y_AXIS));
@@ -89,6 +104,8 @@ public class LoadFilesFrame extends JFrame implements ActionListener {
         usersFileChoosePanel.setBackground(panelBackgroundColor);
         campaignsLabelPanel.setBackground(panelBackgroundColor);
         campaignsFileChoosePanel.setBackground(panelBackgroundColor);
+        eventsLabelPanel.setBackground(panelBackgroundColor);
+        eventsFileChoosePanel.setBackground(panelBackgroundColor);
         loadButtonPanel.setBackground(panelBackgroundColor);
 
         this.add(mainPanel);
@@ -96,24 +113,31 @@ public class LoadFilesFrame extends JFrame implements ActionListener {
         mainPanel.add(usersFileChoosePanel);
         mainPanel.add(campaignsLabelPanel);
         mainPanel.add(campaignsFileChoosePanel);
+        mainPanel.add(eventsLabelPanel);
+        mainPanel.add(eventsFileChoosePanel);
         mainPanel.add(loadButtonPanel);
     }
 
     private void initializeLabels(){
         usersFileLabel = new JLabel("Users File");
         campaignsFileLabel = new JLabel("Campaigns File");
+        eventsFileLabel = new JLabel("Events File");
 
-        Font font1 = new Font("SansSerif", Font.PLAIN,15);
-        usersFileLabel.setFont(font1);
-        campaignsFileLabel.setFont(font1);
+        Font font = new Font("SansSerif", Font.PLAIN,15);
+        usersFileLabel.setFont(font);
+        campaignsFileLabel.setFont(font);
+        eventsFileLabel.setFont(font);
     }
 
     private void initializeFileChoosers(){
         usersFileChooser = new JFileChooser(defaultChooserPath);
         campaignsFileChooser = new JFileChooser(defaultChooserPath);
+        eventsFileChooser = new JFileChooser(defaultChooserPath);
+
         FileNameExtensionFilter filter = new FileNameExtensionFilter("TEXT FILES", "txt", "text");
         usersFileChooser.setFileFilter(filter);
         campaignsFileChooser.setFileFilter(filter);
+        eventsFileChooser.setFileFilter(filter);
     }
 
     private void initializeButtons(){
@@ -126,13 +150,18 @@ public class LoadFilesFrame extends JFrame implements ActionListener {
         campaignsChooserButton = new JButton("...");
         campaignsChooserButton.setFocusPainted(false);
 
-        usersChooserButton.setBackground(new Color(235,180,36));
-        campaignsChooserButton.setBackground(new Color(235,180,36));
-        loadButton.setBackground(new Color(73,195,158));
+        eventsChooserButton = new JButton("...");
+        eventsChooserButton.setFocusPainted(false);
+
+        usersChooserButton.setBackground(fileChooserBackgroundColor);
+        campaignsChooserButton.setBackground(fileChooserBackgroundColor);
+        eventsChooserButton.setBackground(fileChooserBackgroundColor);
+        loadButton.setBackground(buttonBackgroundColor);
 
         loadButton.addActionListener(this);
         usersChooserButton.addActionListener(this);
         campaignsChooserButton.addActionListener(this);
+        eventsChooserButton.addActionListener(this);
     }
 
     private void initializeTextFields(){
@@ -144,12 +173,17 @@ public class LoadFilesFrame extends JFrame implements ActionListener {
         //campaignsPathTextField.setEditable(false);
         campaignsPathTextField.setBackground(Color.WHITE);
 
-        Font font1 = new Font("SansSerif", Font.PLAIN,13);
-        usersPathTextField.setFont(font1);
-        campaignsPathTextField.setFont(font1);
+        eventsPathTextField = new JTextField(40);
+        eventsPathTextField.setBackground(Color.WHITE);
+
+        Font font = new Font("SansSerif", Font.PLAIN,13);
+        usersPathTextField.setFont(font);
+        campaignsPathTextField.setFont(font);
+        eventsPathTextField.setFont(font);
 
         usersPathTextField.setBorder(BorderFactory.createEmptyBorder(3,10,3,10));
         campaignsPathTextField.setBorder(BorderFactory.createEmptyBorder(3,10,3,10));
+        eventsPathTextField.setBorder(BorderFactory.createEmptyBorder(3,10,3,10));
     }
 
     private void addComponentsToPanels(){
@@ -159,6 +193,9 @@ public class LoadFilesFrame extends JFrame implements ActionListener {
         campaignsLabelPanel.add(campaignsFileLabel);
         campaignsFileChoosePanel.add(campaignsChooserButton);
         campaignsFileChoosePanel.add(campaignsPathTextField);
+        eventsLabelPanel.add(eventsFileLabel);
+        eventsFileChoosePanel.add(eventsChooserButton);
+        eventsFileChoosePanel.add(eventsPathTextField);
         loadButtonPanel.add(loadButton);
     }
 
@@ -167,12 +204,19 @@ public class LoadFilesFrame extends JFrame implements ActionListener {
 
        if(e.getSource() == usersChooserButton){
            chooseUsersFile();
-
-       }else if(e.getSource() == campaignsChooserButton){
+            return;
+       }
+       if(e.getSource() == campaignsChooserButton){
            chooseCampaignsFile();
-
-       }else if(e.getSource() == loadButton){
+           return;
+       }
+       if(e.getSource() == eventsChooserButton){
+            chooseEventsFile();
+            return;
+       }
+       if(e.getSource() == loadButton){
            loadFiles();
+           return;
        }
     }
 
@@ -202,7 +246,22 @@ public class LoadFilesFrame extends JFrame implements ActionListener {
                 System.out.println(campaignsFile.getAbsolutePath());
             }
         }else{
-            System.out.println("Nothing selected as users file");
+            System.out.println("Nothing selected as campaigns file");
+        }
+    }
+
+    private void chooseEventsFile(){
+        System.out.println("Choosing events file...");
+        int returnValue = eventsFileChooser.showOpenDialog(this);
+        if(returnValue == JFileChooser.APPROVE_OPTION){
+            File file = eventsFileChooser.getSelectedFile();
+            if(file!=null){
+                this.eventsFile = file;
+                this.eventsPathTextField.setText(this.eventsFile.getAbsolutePath());
+                System.out.println(eventsFile.getAbsolutePath());
+            }
+        }else{
+            System.out.println("Nothing selected as events file");
         }
     }
 
@@ -219,14 +278,10 @@ public class LoadFilesFrame extends JFrame implements ActionListener {
     }
 
     private void parseFiles(){
-        try {
+        try{
             InputParser.parseUsersInput(usersFile.getAbsolutePath());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        try {
             InputParser.parseCampaignInput(campaignsFile.getAbsolutePath());
+            InputParser.parseEventsInput(eventsFile.getAbsolutePath());
         } catch (IOException e) {
             e.printStackTrace();
         }

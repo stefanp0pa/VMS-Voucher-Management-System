@@ -97,7 +97,6 @@ public class Campaign {
             if(!this.observers.contains(user)){
                 addObserver(user);
             }
-            System.out.println("TREBUIA SA FIE CEVA AICI");
             user.getReceivedVouchers().addVoucher(newVoucher);
         }else{
             System.out.println("Bulsshit!!");
@@ -109,6 +108,8 @@ public class Campaign {
                 .addVoucher(newVoucher);
 
         this.availableVouchersCount--;
+
+        System.out.println("S-a generat voucher!");
     }
 
     public boolean redeemVoucher(String code, Date date){
