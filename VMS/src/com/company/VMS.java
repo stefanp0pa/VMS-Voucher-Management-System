@@ -59,7 +59,7 @@ public class VMS {
         if(myCampaign.getCampaignStatusType() == Campaign.CampaignStatusType.NEW){
             myCampaign.setCampaignName(campaign.getCampaignName());
             myCampaign.setCampaignDescription(campaign.getCampaignDescription());
-            myCampaign.setStrategyType(campaign.getStrategyType());
+            //myCampaign.setStrategyType(campaign.getStrategyType());
             myCampaign.setStartDate(campaign.getStartDate());
             myCampaign.setEndDate(campaign.getEndDate());
             myCampaign.setTotalVouchersCount(campaign.getTotalVouchersCount());
@@ -119,6 +119,18 @@ public class VMS {
             if(campaigns.get(i).getCampaignName().compareTo(name)==0){
                 return campaigns.get(i);
             }
+        }
+        return null;
+    }
+
+    public static Strategy decideStrategyType(String type){
+        switch (type){
+            case "A":
+                return new StrategyA();
+            case "B":
+                return new StrategyB();
+            case "C":
+                return new StrategyC();
         }
         return null;
     }

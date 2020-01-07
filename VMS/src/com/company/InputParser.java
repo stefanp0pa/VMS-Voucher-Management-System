@@ -223,15 +223,15 @@ public class InputParser {
                     break;
 
                 case "addCampaign":
-                    parseAddCampaignEvent(scanner);
+                    parseAddCampaignEvent(userId,scanner);
                     break;
 
                 case "cancelCampaign":
-                    parseCancelCampaignEvent(scanner);
+                    parseCancelCampaignEvent(userId,scanner);
                     break;
 
                 case "editCampaign":
-                    parseEditCampaignEvent(scanner);
+                    parseEditCampaignEvent(userId,scanner);
                     break;
 
                 default:
@@ -292,7 +292,7 @@ public class InputParser {
         return true;
     }
 
-    private static boolean parseAddCampaignEvent(Scanner scanner){
+    private static boolean parseAddCampaignEvent(Integer userId,Scanner scanner){
         scanner.useDelimiter(";");
         int campaignId = Integer.parseInt(scanner.next());
         String campaignName = scanner.next();
@@ -327,6 +327,8 @@ public class InputParser {
 
         scanner.useDelimiter(":|;");
         minutes = Integer.parseInt(scanner.next());
+        cal.set(year,month-1,day,hour,minutes,0);
+        Date endDate = cal.getTime();
 
         scanner.useDelimiter(";");
         int budget = Integer.parseInt(scanner.next());
@@ -335,11 +337,25 @@ public class InputParser {
         String strategyType = scanner.next();
 
         //add campaign
+        if(VMS.getInstance().getUserById(userId)!=null){
+            if(VMS.getInstance().getUserById(userId).getUserType() == User.UserType.ADMIN){
+                VMS.getInstance().addCampaign(new Campaign(
+                        campaignId,
+                        campaignName,
+                        campaignDescription,
+                        startDate,
+                        endDate,
+                        budget,
+                        VMS.decideStrategyType(strategyType)
+                        ));
+            }
+        }
+
 
         return true;
     }
 
-    private static boolean parseEditCampaignEvent(Scanner scanner){
+    private static boolean parseEditCampaignEvent(Integer userId,Scanner scanner){
         scanner.useDelimiter(";");
         int campaignId = Integer.parseInt(scanner.next());
         String campaignName = scanner.next();
@@ -381,14 +397,36 @@ public class InputParser {
         scanner.useDelimiter(";|(\\n)");
         int budget = Integer.parseInt(scanner.next());
 
-        System.out.println(budget);
+        //System.out.println(budget);
+
+        User user = VMS.getInstance().getUserById(userId);
+        if(user!=null){
+            if(user.getUserType() == User.UserType.ADMIN){
+                //verificarea pentru update se face in functia updateCampaign()
+                VMS.getInstance().updateCampaign(campaignId,new Campaign(
+                        campaignId,
+                        campaignName,
+                        campaignDescription,
+                        startDate,
+                        endDate,
+                        budget,
+                        null
+                ));
+            }
+        }
 
         return true;
     }
 
-    private static boolean parseCancelCampaignEvent(Scanner scanner){
+    private static boolean parseCancelCampaignEvent(Integer userId,Scanner scanner){
         scanner.useDelimiter(";|(\\n)");
         int campaignId = Integer.parseInt(scanner.next());
+        User user = VMS.getInstance().getUserById(userId);
+        if(user!=null){
+            if(user.getUserType() == User.UserType.ADMIN){
+                VMS.getInstance().cancelCampaign(campaignId);
+            }
+        }
         return true;
     }
 

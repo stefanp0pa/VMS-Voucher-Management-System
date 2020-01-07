@@ -61,17 +61,6 @@ public class Campaign {
     public Integer getNewVoucherId(){return this.voucherId++;}
     public static Integer getNewVoucherCode(){return Campaign.voucherCode++;}
 
-
-    /*public Vector<Voucher> getVouchers(){return this.vouchers;}
-    public Voucher getVoucher(String voucherCode){
-        Voucher target = null;
-        for(int i = 0; i < vouchers.size();i++){
-            if(vouchers.get(i).getVoucherCode() == voucherCode)
-                target = vouchers.get(i);
-        }
-        return target;
-    }
-*/
     public void generateVoucher(String email,String voucherType,float value){
 
         if(getCampaignStatusType() == CampaignStatusType.EXPIRED)
@@ -80,7 +69,6 @@ public class Campaign {
             return;
         if(availableVouchersCount <= 0)
             return;
-        availableVouchersCount--;
 
         Integer voucherCode = Campaign.voucherCode++;
         Integer voucherId = getNewVoucherId();
@@ -119,6 +107,8 @@ public class Campaign {
 
         this.campaignVoucherMap
                 .addVoucher(newVoucher);
+
+        this.availableVouchersCount--;
     }
 
     public boolean redeemVoucher(String code, Date date){
