@@ -238,7 +238,6 @@ public class InputParser {
                     break;
             }
         }
-
         return true;
     }
 

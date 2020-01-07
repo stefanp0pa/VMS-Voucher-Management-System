@@ -6,6 +6,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Vector;
 
 public class CampaignsAdminFrame extends JFrame implements ActionListener {
@@ -68,6 +69,8 @@ public class CampaignsAdminFrame extends JFrame implements ActionListener {
     private JPanel campaignStatusPanel;
 
     private JButton cancelButton;
+
+    private JButton editButton;
 
     private JFrame previousFrame;
 
@@ -186,6 +189,7 @@ public class CampaignsAdminFrame extends JFrame implements ActionListener {
         sortByStartButton = new JButton("Sort start");
         giveDetailsButton = new JButton("Details!");
         cancelButton = new JButton("Cancel!");
+        editButton = new JButton("Edit!");
 
         backButton.setFocusPainted(false);
         listCampaignsButton.setFocusPainted(false);
@@ -197,6 +201,7 @@ public class CampaignsAdminFrame extends JFrame implements ActionListener {
         sortByNameButton.setFocusPainted(false);
         giveDetailsButton.setFocusPainted(false);
         cancelButton.setFocusPainted(false);
+        editButton.setFocusPainted(false);
 
         backButton.setBackground(buttonBackgroundColor);
         listCampaignsButton.setBackground(buttonBackgroundColor);
@@ -208,6 +213,7 @@ public class CampaignsAdminFrame extends JFrame implements ActionListener {
         sortByNameButton.setBackground(buttonBackgroundColor);
         giveDetailsButton.setBackground(buttonBackgroundColor);
         cancelButton.setBackground(buttonBackgroundColor);
+        editButton.setBackground(buttonBackgroundColor);
 
         backButton.addActionListener(this);
         listCampaignsButton.addActionListener(this);
@@ -219,6 +225,7 @@ public class CampaignsAdminFrame extends JFrame implements ActionListener {
         sortByStartButton.addActionListener(this);
         giveDetailsButton.addActionListener(this);
         cancelButton.addActionListener(this);
+        editButton.addActionListener(this);
     }
 
     private void initializePanels() {
@@ -295,19 +302,30 @@ public class CampaignsAdminFrame extends JFrame implements ActionListener {
             listCampaignsButtonAction();
             return;
         }
+
+        //update buttons
         if(e.getSource()==updateCampaignButton){
+            updateCampaignButtonAction();
             return;
         }
-        if(e.getSource()==cancelCampaignButton){
-            cancelCampaignButtonAction();
+        if(e.getSource()==editButton){
+            editButtonAction();
             return;
         }
+
+        //detail buttons
         if(e.getSource()==detailCampaignButton){
             detailCampaignButtonAction();
             return;
         }
         if(e.getSource()==giveDetailsButton){
             giveDetailsButtonAction();
+            return;
+        }
+
+        //cancel buttons
+        if(e.getSource()==cancelCampaignButton){
+            cancelCampaignButtonAction();
             return;
         }
         if(e.getSource() == cancelButton){
@@ -340,6 +358,97 @@ public class CampaignsAdminFrame extends JFrame implements ActionListener {
         initializeTable(data);
     }
 
+    // edit methods
+    private void updateCampaignButtonAction(){
+        emptyDetailPanel();
+        resetTextFields();
+        detailPanel.setLayout(new BoxLayout(detailPanel, BoxLayout.Y_AXIS));
+        detailPanel.add(campaignIdPanel);
+        detailPanel.add(campaignNamePanel);
+        detailPanel.add(campaignDescriptionPanel);
+        detailPanel.add(campaignStartDatePanel);
+        detailPanel.add(campaignEndDatePanel);
+        detailPanel.add(totalVouchersPanel);
+
+        campaignIdPanel.setLayout(new FlowLayout());
+        campaignIdPanel.add(campaignIdLabel);
+        campaignIdPanel.add(campaignIdTextField);
+        campaignIdPanel.add(editButton);
+
+        campaignNamePanel.setLayout(new FlowLayout());
+        campaignNamePanel.add(campaignNameLabel);
+        campaignNamePanel.add(campaignNameTextField);
+
+        campaignDescriptionPanel.setLayout(new FlowLayout());
+        campaignDescriptionPanel.add(campaignDescriptionLabel);
+        campaignDescriptionPanel.add(campaignDescriptionTextField);
+
+        campaignStartDatePanel.setLayout(new FlowLayout());
+        campaignStartDatePanel.add(campaignStartDateLabel);
+        campaignStartDatePanel.add(campaignStartDateTextField);
+
+        campaignEndDatePanel.setLayout(new FlowLayout());
+        campaignEndDatePanel.add(campaignEndDateLabel);
+        campaignEndDatePanel.add(campaignEndDateTextField);
+
+        totalVouchersPanel.setLayout(new FlowLayout());
+        totalVouchersPanel.add(totalVouchersLabel);
+        totalVouchersPanel.add(totalVouchersTextField);
+
+        detailPanel.repaint();
+        detailPanel.revalidate();
+    }
+
+    private void editButtonAction(){
+        String id = campaignIdTextField.getText();
+        if(id == null || id.isEmpty()){
+            JOptionPane.showMessageDialog(this,"Provide an ID");
+            return;
+        }
+        Campaign campaign = VMS.getInstance().getCampaign(Integer.parseInt(id));
+        if(campaign == null){
+            JOptionPane.showMessageDialog(this,"Provide a valid ID");
+            return;
+        }
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm");
+
+
+        String newCampaignName = campaignNameTextField.getText();
+        if(newCampaignName.isEmpty() || newCampaignName == null){
+            JOptionPane.showMessageDialog(this,"Update error, fill all text fields!");
+            return;
+        }
+
+        String newCampaignDescription = campaignDescriptionTextField.getText();
+        if(newCampaignDescription.isEmpty() || newCampaignDescription == null){
+            JOptionPane.showMessageDialog(this,"Update error, fill all text fields!");
+            return;
+        }
+
+        //nu am implementat o metoda de parsare a inputului
+        //TODO(1)
+        Date newStartDate = campaign.getStartDate();
+        Date newEndDate = campaign.getEndDate();
+
+        if(totalVouchersTextField.getText().isEmpty() || totalVouchersTextField.getText() == null){
+            JOptionPane.showMessageDialog(this,"Update error, fill all text fields!");
+            return;
+        }
+        Integer newTotalVouchers = Integer.parseInt(totalVouchersTextField.getText());
+
+        VMS.getInstance().updateCampaign(Integer.parseInt(id),new Campaign(
+                Integer.parseInt(id),
+                newCampaignName,
+                newCampaignDescription,
+                newStartDate,
+                newEndDate,
+                newTotalVouchers,
+                null
+        ));
+    }
+
+
+    // detail methods
     private void detailCampaignButtonAction(){
         emptyDetailPanel();
         resetTextFields();
@@ -395,18 +504,6 @@ public class CampaignsAdminFrame extends JFrame implements ActionListener {
         detailPanel.revalidate();
     }
 
-    private void cancelCampaignButtonAction(){
-        emptyDetailPanel();
-        resetTextFields();
-        detailPanel.setLayout(new FlowLayout());
-        detailPanel.add(campaignIdLabel);
-        detailPanel.add(campaignIdTextField);
-        detailPanel.add(cancelButton);
-
-        revalidate();
-        repaint();
-    }
-
     private void giveDetailsButtonAction(){
         String id = campaignIdTextField.getText();
         if(id == null || id.isEmpty()){
@@ -429,6 +526,20 @@ public class CampaignsAdminFrame extends JFrame implements ActionListener {
         campaignStatusTextField.setText(campaign.getCampaignStatusType().toString());
     }
 
+
+    // cancel methods
+    private void cancelCampaignButtonAction(){
+        emptyDetailPanel();
+        resetTextFields();
+        detailPanel.setLayout(new FlowLayout());
+        detailPanel.add(campaignIdLabel);
+        detailPanel.add(campaignIdTextField);
+        detailPanel.add(cancelButton);
+
+        revalidate();
+        repaint();
+    }
+
     private void cancelButtonAction(){
         String id = campaignIdTextField.getText();
         if(id == null || id.isEmpty()){
@@ -447,8 +558,11 @@ public class CampaignsAdminFrame extends JFrame implements ActionListener {
         VMS.getInstance().cancelCampaign(Integer.parseInt(id));
     }
 
+
+    // procedure methods
     private void emptyDetailPanel(){
        detailPanel.removeAll();
+       campaignIdPanel.removeAll();
     }
 
     private void resetTextFields(){

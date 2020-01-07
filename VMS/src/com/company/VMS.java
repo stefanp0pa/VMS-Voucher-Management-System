@@ -45,7 +45,13 @@ public class VMS {
         Campaign myCampaign = getCampaign(id);
         if(myCampaign == null)
             return;
+
+        System.out.println("Se updateaza campania " + id);
+
         if(myCampaign.getCampaignStatusType()== Campaign.CampaignStatusType.STARTED){
+
+            System.out.println("Campania are statusul STARTED");
+
             Integer myTotal = myCampaign.getTotalVouchersCount();
             Integer myAvailable = myCampaign.getAvailableVouchersCount();
             Integer myGiven = myTotal-myAvailable;
@@ -57,6 +63,9 @@ public class VMS {
             return;
         }
         if(myCampaign.getCampaignStatusType() == Campaign.CampaignStatusType.NEW){
+
+            System.out.println("Campania are statusul NEW");
+
             myCampaign.setCampaignName(campaign.getCampaignName());
             myCampaign.setCampaignDescription(campaign.getCampaignDescription());
             //myCampaign.setStrategyType(campaign.getStrategyType());
