@@ -410,6 +410,11 @@ public class CampaignsAdminFrame extends JFrame implements ActionListener {
             JOptionPane.showMessageDialog(this,"Provide a valid ID");
             return;
         }
+        if(campaign.getCampaignStatusType() == Campaign.CampaignStatusType.CANCELLED){
+            JOptionPane.showMessageDialog(this,"No use for update, campaign already cancelled!");
+            return;
+        }
+
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm");
 
 
