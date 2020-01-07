@@ -45,6 +45,7 @@ public class CampaignsAdminFrame extends JFrame implements ActionListener {
     private JLabel totalVouchersLabel;
     private JLabel availableVouchersLabel;
     private JLabel strategyLabel;
+    private JLabel campaignStatusLabel;
 
     private JTextField campaignIdTextField;
     private JTextField campaignNameTextField;
@@ -54,6 +55,7 @@ public class CampaignsAdminFrame extends JFrame implements ActionListener {
     private JTextField totalVouchersTextField;
     private JTextField availableVouchersTextField;
     private JTextField strategyTextField;
+    private JTextField campaignStatusTextField;
 
     private JPanel campaignIdPanel;
     private JPanel campaignNamePanel;
@@ -63,6 +65,9 @@ public class CampaignsAdminFrame extends JFrame implements ActionListener {
     private JPanel totalVouchersPanel;
     private JPanel availableVouchersPanel;
     private JPanel strategyPanel;
+    private JPanel campaignStatusPanel;
+
+    private JButton cancelButton;
 
     private JFrame previousFrame;
 
@@ -75,7 +80,8 @@ public class CampaignsAdminFrame extends JFrame implements ActionListener {
             "Description",
             "Start",
             "End",
-            "Strategy"
+            "Strategy",
+            "Status"
     };
 
     public CampaignsAdminFrame(User user,JFrame previousFrame){
@@ -118,6 +124,7 @@ public class CampaignsAdminFrame extends JFrame implements ActionListener {
         totalVouchersTextField = new JTextField(5);
         availableVouchersTextField = new JTextField(5);
         strategyTextField = new JTextField(3);
+        campaignStatusTextField = new JTextField(8);
 
         campaignIdTextField.setBackground(Color.WHITE);
         campaignNameTextField.setBackground(Color.WHITE);
@@ -127,8 +134,7 @@ public class CampaignsAdminFrame extends JFrame implements ActionListener {
         totalVouchersTextField.setBackground(Color.WHITE);
         availableVouchersTextField.setBackground(Color.WHITE);
         strategyTextField.setBackground(Color.WHITE);
-
-
+        campaignStatusTextField.setBackground(Color.WHITE);
     }
 
     private void initializeLabels(){
@@ -140,16 +146,17 @@ public class CampaignsAdminFrame extends JFrame implements ActionListener {
         totalVouchersLabel = new JLabel("Total Vouchers: ");
         availableVouchersLabel = new JLabel("Available Vouchers: ");
         strategyLabel = new JLabel("Strategy: ");
+        campaignStatusLabel = new JLabel("Campaign Status: ");
     }
 
     private void initializeTable(Object[][] data){
         campaignsTable = new JTable(data,columnNames);
         campaignsTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
         campaignsTable.getColumnModel().getColumn(0).setPreferredWidth(40);
-        campaignsTable.getColumnModel().getColumn(1).setPreferredWidth(200);
+        campaignsTable.getColumnModel().getColumn(1).setPreferredWidth(100);
         campaignsTable.getColumnModel().getColumn(2).setPreferredWidth(200);
-        campaignsTable.getColumnModel().getColumn(3).setPreferredWidth(140);
-        campaignsTable.getColumnModel().getColumn(4).setPreferredWidth(140);
+        campaignsTable.getColumnModel().getColumn(3).setPreferredWidth(100);
+        campaignsTable.getColumnModel().getColumn(4).setPreferredWidth(100);
         campaignsTable.getColumnModel().getColumn(5).setPreferredWidth(60);
         campaignsTable.setPreferredScrollableViewportSize(campaignsTable.getPreferredSize());
 
@@ -178,6 +185,7 @@ public class CampaignsAdminFrame extends JFrame implements ActionListener {
         sortByNameButton = new JButton("Sort name");
         sortByStartButton = new JButton("Sort start");
         giveDetailsButton = new JButton("Details!");
+        cancelButton = new JButton("Cancel!");
 
         backButton.setFocusPainted(false);
         listCampaignsButton.setFocusPainted(false);
@@ -188,6 +196,7 @@ public class CampaignsAdminFrame extends JFrame implements ActionListener {
         sortByStartButton.setFocusPainted(false);
         sortByNameButton.setFocusPainted(false);
         giveDetailsButton.setFocusPainted(false);
+        cancelButton.setFocusPainted(false);
 
         backButton.setBackground(buttonBackgroundColor);
         listCampaignsButton.setBackground(buttonBackgroundColor);
@@ -198,6 +207,7 @@ public class CampaignsAdminFrame extends JFrame implements ActionListener {
         sortByStartButton.setBackground(buttonBackgroundColor);
         sortByNameButton.setBackground(buttonBackgroundColor);
         giveDetailsButton.setBackground(buttonBackgroundColor);
+        cancelButton.setBackground(buttonBackgroundColor);
 
         backButton.addActionListener(this);
         listCampaignsButton.addActionListener(this);
@@ -208,6 +218,7 @@ public class CampaignsAdminFrame extends JFrame implements ActionListener {
         sortByNameButton.addActionListener(this);
         sortByStartButton.addActionListener(this);
         giveDetailsButton.addActionListener(this);
+        cancelButton.addActionListener(this);
     }
 
     private void initializePanels() {
@@ -228,6 +239,7 @@ public class CampaignsAdminFrame extends JFrame implements ActionListener {
         totalVouchersPanel = new JPanel();
         availableVouchersPanel = new JPanel();
         strategyPanel = new JPanel();
+        campaignStatusPanel = new JPanel();
 
         detailPanel.setLayout(new FlowLayout());
         //backButtonPanel.setBorder(new EmptyBorder(20,10,0,10));
@@ -287,6 +299,7 @@ public class CampaignsAdminFrame extends JFrame implements ActionListener {
             return;
         }
         if(e.getSource()==cancelCampaignButton){
+            cancelCampaignButtonAction();
             return;
         }
         if(e.getSource()==detailCampaignButton){
@@ -295,6 +308,10 @@ public class CampaignsAdminFrame extends JFrame implements ActionListener {
         }
         if(e.getSource()==giveDetailsButton){
             giveDetailsButtonAction();
+            return;
+        }
+        if(e.getSource() == cancelButton){
+            cancelButtonAction();
             return;
         }
     }
@@ -309,7 +326,7 @@ public class CampaignsAdminFrame extends JFrame implements ActionListener {
     private void listCampaignsButtonAction(){
         emptyDetailPanel();
         Vector<Campaign> campaigns = VMS.getInstance().getCampaigns();
-        Object[][] data = new Object[campaigns.size()][6];
+        Object[][] data = new Object[campaigns.size()][7];
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm");
         for(int i = 0; i < campaigns.size(); i++){
             data[i][0] = campaigns.get(i).getCampaignId();
@@ -318,12 +335,14 @@ public class CampaignsAdminFrame extends JFrame implements ActionListener {
             data[i][3] = (sdf.format(campaigns.get(i).getStartDate())).toString();
             data[i][4] = (sdf.format(campaigns.get(i).getEndDate())).toString();
             data[i][5] = campaigns.get(i).getStrategyType().strategyName;
+            data[i][6] = campaigns.get(i).getCampaignStatusType();
         }
         initializeTable(data);
     }
 
     private void detailCampaignButtonAction(){
         emptyDetailPanel();
+        resetTextFields();
         detailPanel.setLayout(new BoxLayout(detailPanel, BoxLayout.Y_AXIS));
         detailPanel.add(campaignIdPanel);
         detailPanel.add(campaignNamePanel);
@@ -333,6 +352,7 @@ public class CampaignsAdminFrame extends JFrame implements ActionListener {
         detailPanel.add(totalVouchersPanel);
         detailPanel.add(availableVouchersPanel);
         detailPanel.add(strategyPanel);
+        detailPanel.add(campaignStatusPanel);
 
         campaignIdPanel.setLayout(new FlowLayout());
         campaignIdPanel.add(campaignIdLabel);
@@ -367,8 +387,24 @@ public class CampaignsAdminFrame extends JFrame implements ActionListener {
         strategyPanel.add(strategyLabel);
         strategyPanel.add(strategyTextField);
 
+        campaignStatusPanel.setLayout(new FlowLayout());
+        campaignStatusPanel.add(campaignStatusLabel);
+        campaignStatusPanel.add(campaignStatusTextField);
+
         detailPanel.repaint();
         detailPanel.revalidate();
+    }
+
+    private void cancelCampaignButtonAction(){
+        emptyDetailPanel();
+        resetTextFields();
+        detailPanel.setLayout(new FlowLayout());
+        detailPanel.add(campaignIdLabel);
+        detailPanel.add(campaignIdTextField);
+        detailPanel.add(cancelButton);
+
+        revalidate();
+        repaint();
     }
 
     private void giveDetailsButtonAction(){
@@ -390,11 +426,40 @@ public class CampaignsAdminFrame extends JFrame implements ActionListener {
         strategyTextField.setText(campaign.getStrategyType().strategyName);
         totalVouchersTextField.setText(campaign.getTotalVouchersCount().toString());
         availableVouchersTextField.setText(campaign.getAvailableVouchersCount().toString());
+        campaignStatusTextField.setText(campaign.getCampaignStatusType().toString());
+    }
+
+    private void cancelButtonAction(){
+        String id = campaignIdTextField.getText();
+        if(id == null || id.isEmpty()){
+            JOptionPane.showMessageDialog(this,"Provide an ID");
+            return;
+        }
+        Campaign campaign = VMS.getInstance().getCampaign(Integer.parseInt(id));
+        if(campaign == null){
+            JOptionPane.showMessageDialog(this,"Provide a valid ID");
+            return;
+        }
+        if(campaign.getCampaignStatusType()== Campaign.CampaignStatusType.CANCELLED){
+            JOptionPane.showMessageDialog(this,"Campaign already cancelled");
+            return;
+        }
+        VMS.getInstance().cancelCampaign(Integer.parseInt(id));
     }
 
     private void emptyDetailPanel(){
-        while(detailPanel.getComponentCount()>0){
-            detailPanel.remove(0);
-        }
+       detailPanel.removeAll();
+    }
+
+    private void resetTextFields(){
+        campaignIdTextField.setText(null);
+        campaignNameTextField.setText(null);
+        campaignDescriptionTextField.setText(null);
+        campaignStartDateTextField.setText(null);
+        campaignEndDateTextField.setText(null);
+        totalVouchersTextField.setText(null);
+        availableVouchersTextField.setText(null);
+        strategyTextField.setText(null);
+        campaignStatusTextField.setText(null);
     }
 }
