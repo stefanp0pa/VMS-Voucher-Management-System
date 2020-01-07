@@ -172,6 +172,9 @@ public class AdminMainFrame extends JFrame implements ActionListener {
             this.setVisible(false);
             new CampaignsAdminFrame(user,this);
         }
-
+        if(e.getSource() == adminVouchersButton){
+            this.setVisible(false);
+            new VouchersAdminFrame(user,this);
+        }
     }
 }

@@ -226,6 +226,13 @@ public class CampaignsAdminFrame extends JFrame implements ActionListener {
         giveDetailsButton.addActionListener(this);
         cancelButton.addActionListener(this);
         editButton.addActionListener(this);
+
+        Font font = new Font("SansSerif",Font.PLAIN,15);
+        backButton.setFont(font);
+        listCampaignsButton.setFont(font);
+        updateCampaignButton.setFont(font);
+        cancelCampaignButton.setFont(font);
+        detailCampaignButton.setFont(font);
     }
 
     private void initializePanels() {
@@ -247,16 +254,6 @@ public class CampaignsAdminFrame extends JFrame implements ActionListener {
         availableVouchersPanel = new JPanel();
         strategyPanel = new JPanel();
         campaignStatusPanel = new JPanel();
-
-        detailPanel.setLayout(new FlowLayout());
-        //backButtonPanel.setBorder(new EmptyBorder(20,10,0,10));
-
-        Font font = new Font("SansSerif",Font.PLAIN,15);
-        backButton.setFont(font);
-        listCampaignsButton.setFont(font);
-        updateCampaignButton.setFont(font);
-        cancelCampaignButton.setFont(font);
-        detailCampaignButton.setFont(font);
 
         masterPanel.setLayout(new BoxLayout(masterPanel, BoxLayout.Y_AXIS));
         detailPanel.setLayout(new BoxLayout(detailPanel, BoxLayout.Y_AXIS));
@@ -560,7 +557,9 @@ public class CampaignsAdminFrame extends JFrame implements ActionListener {
             JOptionPane.showMessageDialog(this,"Campaign already cancelled");
             return;
         }
-        VMS.getInstance().cancelCampaign(Integer.parseInt(id));
+        if(user.getUserType() == User.UserType.ADMIN){
+            VMS.getInstance().cancelCampaign(Integer.parseInt(id));
+        }
     }
 
 
