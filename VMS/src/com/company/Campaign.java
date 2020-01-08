@@ -122,7 +122,6 @@ public class Campaign {
             return false;
 
         Voucher v = getVoucherByCode(code);
-
         // voucher marcat si eliminat din dictionar
         if(!markUsedVoucher(v,date))
             return false;
@@ -141,13 +140,15 @@ public class Campaign {
         // in afara perioadei campaniei
         if(this.startDate.after(date))
             return false;
+
         if(date.after(this.endDate))
             return false;
+
         if(date.compareTo(this.endDate)==0)
             return false;
+
         v.setUsedDate(date);
         v.setVoucherStatusType(Voucher.VoucherStatusType.USED);
-
         return this.campaignVoucherMap.removeVoucher(v);
     }
 

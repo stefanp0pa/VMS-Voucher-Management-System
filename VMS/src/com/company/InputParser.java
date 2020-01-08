@@ -183,6 +183,8 @@ public class InputParser {
         cal.set(year,month-1,day,hour,minutes,0);
         Date startApplicationDate = cal.getTime();
 
+        VMS.getInstance().setApplicationStartDate(startApplicationDate);
+
         scanner.useDelimiter("(\\n)");
         int eventsCount = Integer.parseInt(scanner.next());
 
@@ -277,7 +279,7 @@ public class InputParser {
         int minutes = Integer.parseInt(scanner.next());
 
         Calendar cal = Calendar.getInstance();
-        cal.set(year,month,day,hour,minutes,0);
+        cal.set(year,month-1,day,hour,minutes,0);
         Date redeemDate = cal.getTime();
 
         if(VMS.getInstance().getUserById(userId).getUserType() == User.UserType.ADMIN){

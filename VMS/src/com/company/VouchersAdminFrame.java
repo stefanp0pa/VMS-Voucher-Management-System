@@ -4,6 +4,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.SimpleDateFormat;
+import java.util.Vector;
 
 public class VouchersAdminFrame extends JFrame implements ActionListener {
 
@@ -32,7 +34,7 @@ public class VouchersAdminFrame extends JFrame implements ActionListener {
             "Campaign ID",
             "Email",
             "Voucher Type",
-            "Sum",
+            "Value",
             "Status",
             "Used date"
     };
@@ -139,6 +141,30 @@ public class VouchersAdminFrame extends JFrame implements ActionListener {
         masterPanel.add(searchForVoucherPanel);
     }
 
+    private void initializeTable(Object[][] data){
+        vouchersTable = new JTable(data,vouchersTableColumnsName);
+        vouchersTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+        vouchersTable.getColumnModel().getColumn(0).setPreferredWidth(40);
+        vouchersTable.getColumnModel().getColumn(1).setPreferredWidth(100);
+        vouchersTable.getColumnModel().getColumn(2).setPreferredWidth(40);
+        vouchersTable.getColumnModel().getColumn(3).setPreferredWidth(120);
+        vouchersTable.getColumnModel().getColumn(4).setPreferredWidth(80);
+        vouchersTable.getColumnModel().getColumn(5).setPreferredWidth(80);
+        vouchersTable.getColumnModel().getColumn(6).setPreferredWidth(100);
+        vouchersTable.getColumnModel().getColumn(7).setPreferredWidth(120);
+        vouchersTable.setPreferredScrollableViewportSize(vouchersTable.getPreferredSize());
+
+        vouchersTableScrollPane = new JScrollPane(vouchersTable,
+                JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
+                JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+
+        detailPanel.add(vouchersTableScrollPane);
+        vouchersTableScrollPane.setVerticalScrollBarPolicy(
+                JScrollPane.VERTICAL_SCROLLBAR_ALWAYS
+        );
+        detailPanel.repaint();
+        detailPanel.revalidate();
+    }
 
     @Override
     public void actionPerformed(ActionEvent e) {
@@ -147,6 +173,7 @@ public class VouchersAdminFrame extends JFrame implements ActionListener {
             return;
         }
         if(e.getSource() == listVouchersButton){
+            listVouchersButtonAction();
             return;
         }
         if(e.getSource() == addVoucherButton){
@@ -162,5 +189,40 @@ public class VouchersAdminFrame extends JFrame implements ActionListener {
         this.setVisible(false);
         this.previousFrame.setVisible(true);
         this.dispose();
+    }
+
+    private void listVouchersButtonAction(){
+        emptyDetailPanel();
+        Vector<Campaign> campaigns = VMS.getInstance().getCampaigns();
+        Vector<Voucher> vouchers = new Vector<>();
+        for(int i = 0; i < campaigns.size(); i++){
+            Campaign currCampaign = campaigns.get(i);
+            Vector<Voucher> currCampaignVouchers = currCampaign.getVouchers();
+            for(int j = 0; j < currCampaignVouchers.size(); j++){
+                vouchers.add(currCampaignVouchers.get(j));
+            }
+        }
+        Object[][] data = new Object[vouchers.size()][vouchersTableColumnsName.length];
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm");
+        for(int i =0; i < vouchers.size(); i++){
+            data[i][0] = vouchers.get(i).getVoucherId();
+            data[i][1] = vouchers.get(i).getVoucherCode();
+            data[i][2] = vouchers.get(i).getCampaignId();
+            data[i][3] = vouchers.get(i).getEmail();
+            data[i][4] = vouchers.get(i).getVoucherType();
+            data[i][5] = vouchers.get(i).getValue();
+            data[i][6] = vouchers.get(i).getVoucherStatusType();
+            if(vouchers.get(i).getUsedDate()!=null){
+                data[i][7] = (sdf.format(vouchers.get(i).getUsedDate())).toString();
+            }else{
+                data[i][7] = null;
+            }
+
+        }
+        initializeTable(data);
+    }
+
+    private void emptyDetailPanel(){
+        detailPanel.removeAll();
     }
 }
